@@ -55,6 +55,15 @@
             transition: background-color 0.3s ease;
         }
 
+        #saveIntervalsButton {
+            background-color: #22F5B1;
+            width: 100%;
+        }
+
+        #saveIntervalsButton:hover {
+            background-color: #1DDF98;
+        }
+
         #resetAllButton {
             background-color: #FF6347; /* Red color for Reset All */
             width: 100%;
@@ -90,22 +99,43 @@
 
     <div class="settings-container">
         <h2>Spaced Repetition Interval Settings</h2>
+
+        <!-- Aggressive Mode -->
         <div class="setting-item">
-            <p>Set your Spaced Repetition Intervals (in days):</p>
+            <p><strong>Aggressive Mode:</strong> Set shorter intervals for quick review</p>
             <div class="srt-intervals">
-                <label for="interval1">+1 day</label>
-                <input type="number" id="interval1" min="1" value="1">
-                <label for="interval3">+3 days</label>
-                <input type="number" id="interval3" min="1" value="3">
-                <label for="interval7">+7 days</label>
-                <input type="number" id="interval7" min="1" value="7">
-                <label for="interval14">+14 days</label>
-                <input type="number" id="interval14" min="1" value="14">
-                <label for="interval21">+21 days</label>
-                <input type="number" id="interval21" min="1" value="21">
+                <label for="aggressiveInterval1">+1 day</label>
+                <input type="number" id="aggressiveInterval1" min="1" value="1">
+                <label for="aggressiveInterval3">+3 days</label>
+                <input type="number" id="aggressiveInterval3" min="1" value="3">
+                <label for="aggressiveInterval7">+7 days</label>
+                <input type="number" id="aggressiveInterval7" min="1" value="7">
+                <label for="aggressiveInterval14">+14 days</label>
+                <input type="number" id="aggressiveInterval14" min="1" value="14">
+                <label for="aggressiveInterval21">+21 days</label>
+                <input type="number" id="aggressiveInterval21" min="1" value="21">
             </div>
-            <button id="saveIntervalsButton">Save Intervals</button>
         </div>
+
+        <!-- Relaxed Mode -->
+        <div class="setting-item">
+            <p><strong>Relaxed Mode:</strong> Set longer intervals for spaced-out review</p>
+            <div class="srt-intervals">
+                <label for="relaxedInterval1">+1 day</label>
+                <input type="number" id="relaxedInterval1" min="1" value="1">
+                <label for="relaxedInterval3">+3 days</label>
+                <input type="number" id="relaxedInterval3" min="1" value="3">
+                <label for="relaxedInterval7">+7 days</label>
+                <input type="number" id="relaxedInterval7" min="1" value="7">
+                <label for="relaxedInterval14">+14 days</label>
+                <input type="number" id="relaxedInterval14" min="1" value="14">
+                <label for="relaxedInterval21">+21 days</label>
+                <input type="number" id="relaxedInterval21" min="1" value="21">
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <button id="saveIntervalsButton">Save Intervals</button>
 
         <h2>Reset All Tasks</h2>
         <p>This will permanently delete all tasks from your list.</p>
@@ -115,21 +145,38 @@
     <script>
         // Handle Spaced Repetition Intervals Save
         document.getElementById("saveIntervalsButton").addEventListener("click", function () {
-            const interval1 = document.getElementById("interval1").value;
-            const interval3 = document.getElementById("interval3").value;
-            const interval7 = document.getElementById("interval7").value;
-            const interval14 = document.getElementById("interval14").value;
-            const interval21 = document.getElementById("interval21").value;
+            // Aggressive Mode Intervals
+            const aggressiveInterval1 = document.getElementById("aggressiveInterval1").value;
+            const aggressiveInterval3 = document.getElementById("aggressiveInterval3").value;
+            const aggressiveInterval7 = document.getElementById("aggressiveInterval7").value;
+            const aggressiveInterval14 = document.getElementById("aggressiveInterval14").value;
+            const aggressiveInterval21 = document.getElementById("aggressiveInterval21").value;
+
+            // Relaxed Mode Intervals
+            const relaxedInterval1 = document.getElementById("relaxedInterval1").value;
+            const relaxedInterval3 = document.getElementById("relaxedInterval3").value;
+            const relaxedInterval7 = document.getElementById("relaxedInterval7").value;
+            const relaxedInterval14 = document.getElementById("relaxedInterval14").value;
+            const relaxedInterval21 = document.getElementById("relaxedInterval21").value;
 
             const intervals = {
-                interval1: parseInt(interval1),
-                interval3: parseInt(interval3),
-                interval7: parseInt(interval7),
-                interval14: parseInt(interval14),
-                interval21: parseInt(interval21)
+                Aggressive: [
+                    parseInt(aggressiveInterval1),
+                    parseInt(aggressiveInterval3),
+                    parseInt(aggressiveInterval7),
+                    parseInt(aggressiveInterval14),
+                    parseInt(aggressiveInterval21)
+                ],
+                Relaxed: [
+                    parseInt(relaxedInterval1),
+                    parseInt(relaxedInterval3),
+                    parseInt(relaxedInterval7),
+                    parseInt(relaxedInterval14),
+                    parseInt(relaxedInterval21)
+                ]
             };
 
-            localStorage.setItem("srtIntervals", JSON.stringify(intervals));
+            localStorage.setItem("customRegimes", JSON.stringify(intervals));
             alert("Spaced Repetition Intervals saved successfully!");
         });
 
@@ -144,14 +191,22 @@
 
         // Load saved Spaced Repetition Intervals on page load
         document.addEventListener("DOMContentLoaded", function () {
-            const savedIntervals = JSON.parse(localStorage.getItem("srtIntervals"));
+            const savedIntervals = JSON.parse(localStorage.getItem("customRegimes"));
 
             if (savedIntervals) {
-                document.getElementById("interval1").value = savedIntervals.interval1 || 1;
-                document.getElementById("interval3").value = savedIntervals.interval3 || 3;
-                document.getElementById("interval7").value = savedIntervals.interval7 || 7;
-                document.getElementById("interval14").value = savedIntervals.interval14 || 14;
-                document.getElementById("interval21").value = savedIntervals.interval21 || 21;
+                // Aggressive Mode
+                document.getElementById("aggressiveInterval1").value = savedIntervals.Aggressive[0] || 1;
+                document.getElementById("aggressiveInterval3").value = savedIntervals.Aggressive[1] || 3;
+                document.getElementById("aggressiveInterval7").value = savedIntervals.Aggressive[2] || 7;
+                document.getElementById("aggressiveInterval14").value = savedIntervals.Aggressive[3] || 14;
+                document.getElementById("aggressiveInterval21").value = savedIntervals.Aggressive[4] || 21;
+
+                // Relaxed Mode
+                document.getElementById("relaxedInterval1").value = savedIntervals.Relaxed[0] || 1;
+                document.getElementById("relaxedInterval3").value = savedIntervals.Relaxed[1] || 3;
+                document.getElementById("relaxedInterval7").value = savedIntervals.Relaxed[2] || 7;
+                document.getElementById("relaxedInterval14").value = savedIntervals.Relaxed[3] || 14;
+                document.getElementById("relaxedInterval21").value = savedIntervals.Relaxed[4] || 21;
             }
         });
     </script>
