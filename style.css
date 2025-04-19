@@ -14,7 +14,7 @@ body {
   padding: 20px;
 }
 
-/* Header and Navigation */
+/* Header */
 header {
   background-color: #22F5B1;
   padding: 15px;
@@ -241,10 +241,4 @@ input[type="number"].aggressive-input, input[type="number"].relaxed-input {
   color: #000;
   padding: 10px 20px;
   border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-}
-
-.popup-message {
-  text-align: center;
-}
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.
