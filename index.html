@@ -1,136 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Management</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    /* Header Styling */
+    header {
+      background-color: #22F5B1;
+      width: 100%;
+      color: white;
+      padding: 15px 0;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-bottom: 3px solid #1ED193;
+      margin-bottom: 30px;
+    }
+
+    /* Button Container */
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .button-container button {
+      background-color: #22F5B1;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .button-container button:hover {
+      background-color: #1ED193;
+    }
+
+    /* Task Form Styles */
+    form {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    form input,
+    form select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    form button {
+      width: 100%;
+      background-color: #22F5B1;
+      color: white;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #1ED193;
+    }
+
+    /* Task List Styles */
+    .task-item {
+      background-color: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+    }
+
+    .task-item:hover {
+      background-color: #f1f1f1;
+    }
+
+    .task-item p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    /* Popup Styles */
+    .popup {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #22F5B1;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      z-index: 9999;
+    }
+
+    .popup p {
+      margin: 0;
+    }
+
+    /* Task Group Styling */
+    .task-group {
+      width: 80%;
+      max-width: 700px;
+      margin-bottom: 30px;
+    }
+
+    .task-group h3 {
+      background-color: #22F5B1;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 20px;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .task-entry {
+      background-color: white;
+      padding: 18px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .task-entry h4 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .task-entry p {
+      font-size: 16px;
+      color: #777;
+    }
+
+    .task-entry .srt-regime {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .delete-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 15px;
+    }
+
+    .delete-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        padding: 0 10px;
+      }
+
+      .button-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      form,
+      .task-item,
+      .task-entry {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        font-size: 24px;
+        padding: 12px 0;
+      }
+
+      .task-group h3 {
+        font-size: 18px;
+      }
+
+      .popup {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Task Management</h1>
+  <header>
+    Task Manager
+  </header>
 
-        <!-- Task Input Form -->
-        <div id="taskForm" class="task-form">
-            <input type="text" id="taskTitle" placeholder="Enter Task Title" class="input-field">
-            <textarea id="taskDetail" placeholder="Enter Task Detail" class="input-field"></textarea>
-            <input type="date" id="taskDate" class="input-field">
-            <select id="taskRegime" class="input-field">
-                <option value="Standard">Standard</option>
-                <option value="Aggressive">Aggressive</option>
-                <option value="Relaxed">Relaxed</option>
-            </select>
-            <button id="addTaskBtn" class="btn">Add Task</button>
-        </div>
+  <div class="button-container">
+    <button id="settingsButton">Settings</button>
+    <button id="downloadButton">Download Tasks</button>
+  </div>
 
-        <!-- Buttons for Navigation -->
-        <div class="nav-buttons">
-            <button id="viewAllTasksBtn" class="btn">View All Tasks</button>
-        </div>
+  <div id="taskContainer">
+    <form id="addTaskForm">
+      <input type="text" id="taskTitle" placeholder="Task Title" required>
+      <textarea id="taskDetail" placeholder="Task Details" required></textarea>
+      <input type="date" id="taskDate" required>
+      <select id="srtRegime" required>
+        <option value="Standard">Standard</option>
+        <option value="Aggressive">Aggressive</option>
+        <option value="Relaxed">Relaxed</option>
+      </select>
+      <button type="submit">Add Task</button>
+    </form>
 
-        <!-- Today's Tasks and Revision Tasks -->
-        <div id="todayTasksContainer">
-            <h2>Today's Tasks</h2>
-            <div id="todayTasks"></div>
-        </div>
-
-        <div id="revisionTasksContainer">
-            <h2>Revision Tasks</h2>
-            <div id="revisionTasks"></div>
-        </div>
+    <div id="todayTasks">
+      <h3>Today's Tasks</h3>
+      <!-- Dynamic Task List will appear here -->
     </div>
 
-    <script src="app.js"></script>
-    <script>
-        // Add Task Button Event Listener
-        document.getElementById("addTaskBtn").addEventListener("click", function() {
-            addTask();
-        });
+    <div id="revisionTasks">
+      <h3>Revision Tasks</h3>
+      <!-- Dynamic Revision Tasks will appear here -->
+    </div>
+  </div>
 
-        // View All Tasks Button Event Listener
-        document.getElementById("viewAllTasksBtn").addEventListener("click", function() {
-            window.location.href = "all-tasks.html"; // Navigate to All Tasks page
-        });
+  <div id="allTasksContainer">
+    <div class="task-group">
+      <h3>All Tasks</h3>
+      <!-- Dynamic Task Groups will appear here -->
+    </div>
+  </div>
 
-        // Function to Add Task
-        function addTask() {
-            const title = document.getElementById("taskTitle").value;
-            const detail = document.getElementById("taskDetail").value;
-            const date = new Date(document.getElementById("taskDate").value).toISOString();
-            const srtRegime = document.getElementById("taskRegime").value;
+  <div class="popup" style="display:none;">
+    <p>Task added successfully!</p>
+  </div>
 
-            if (title && detail && date && srtRegime) {
-                const task = {
-                    id: Date.now(),
-                    title: title,
-                    detail: detail,
-                    date: date,
-                    srtRegime: srtRegime
-                };
+  <script src="app.js"></script>
 
-                let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-                tasks.push(task);
-                localStorage.setItem("tasks", JSON.stringify(tasks));
-
-                alert("Task Added!");
-                resetForm(); // Reset form fields after adding the task
-                renderTodayTasks(); // Re-render today's tasks
-                renderRevisionTasks(); // Re-render revision tasks
-            } else {
-                alert("Please fill all the fields!");
-            }
-        }
-
-        // Function to Reset Form Fields
-        function resetForm() {
-            document.getElementById("taskTitle").value = "";
-            document.getElementById("taskDetail").value = "";
-            document.getElementById("taskDate").value = "";
-            document.getElementById("taskRegime").value = "Standard";
-        }
-
-        // Function to Render Today's Tasks
-        function renderTodayTasks() {
-            const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-            const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-            const todayTasks = tasks.filter(task => task.date.startsWith(today));
-
-            const container = document.getElementById("todayTasks");
-            container.innerHTML = todayTasks.map(task => `
-                <div class="task-entry">
-                    <h4>${task.title}</h4>
-                    <p>${task.detail}</p>
-                    <p><strong>Regime:</strong> ${task.srtRegime}</p>
-                </div>
-            `).join("");
-        }
-
-        // Function to Render Revision Tasks
-        function renderRevisionTasks() {
-            const today = new Date();
-            const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-            const revisionTasks = tasks.filter(task => {
-                const taskDate = new Date(task.date);
-                const diffInDays = Math.floor((today - taskDate) / (1000 * 3600 * 24));
-                return diffInDays === 1 || diffInDays === 3 || diffInDays === 7 || diffInDays === 14 || diffInDays === 21;
-            });
-
-            const container = document.getElementById("revisionTasks");
-            container.innerHTML = revisionTasks.map(task => `
-                <div class="task-entry">
-                    <h4>${task.title}</h4>
-                    <p>${task.detail}</p>
-                    <p><strong>Regime:</strong> ${task.srtRegime}</p>
-                </div>
-            `).join("");
-        }
-
-        // Render tasks on page load
-        document.addEventListener("DOMContentLoaded", function() {
-            renderTodayTasks();
-            renderRevisionTasks();
-        });
-    </script>
 </body>
 </html>
