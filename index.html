@@ -8,63 +8,53 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header Section -->
   <header>
-    <h1>Task Manager</h1>
-    <p>Your personal task and revision tracker</p>
+    <h1>Welcome to Your Task Manager</h1>
+    <p>Keep track of your tasks and boost your productivity!</p>
   </header>
 
-  <!-- Main Content -->
+  <!-- Main Content Section -->
   <main>
-    <!-- Task Input Form -->
-    <section id="taskInputSection">
-      <h2>Add New Task</h2>
-      <form id="taskForm">
-        <div class="form-group">
-          <label for="taskTitle">Task Title</label>
-          <input type="text" id="taskTitle" placeholder="Enter task title">
-        </div>
-        <div class="form-group">
-          <label for="taskDetail">Task Details</label>
-          <textarea id="taskDetail" placeholder="Enter task details"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="taskDate">Task Date</label>
-          <input type="date" id="taskDate">
-        </div>
-        <div class="form-group">
-          <label for="srtRegime">SRT Regime</label>
-          <select id="srtRegime">
-            <option value="Standard">Standard</option>
-            <option value="Aggressive">Aggressive</option>
-            <option value="Relaxed">Relaxed</option>
-          </select>
-        </div>
-        <button type="button" onclick="addTask()">Add Task</button>
-      </form>
+    <section id="taskControls">
+      <h2>Add a New Task</h2>
+      <div>
+        <label for="taskTitle">Task Title:</label>
+        <input type="text" id="taskTitle" placeholder="Task Title">
+      </div>
+      <div>
+        <label for="taskDetail">Task Details:</label>
+        <textarea id="taskDetail" placeholder="Details about the task..."></textarea>
+      </div>
+      <div>
+        <label for="taskDate">Due Date:</label>
+        <input type="date" id="taskDate">
+      </div>
+      <div>
+        <label for="srtRegime">SRT Regime:</label>
+        <select id="srtRegime">
+          <option value="Standard">Standard</option>
+          <option value="Aggressive">Aggressive</option>
+          <option value="Relaxed">Relaxed</option>
+        </select>
+      </div>
+      <button id="addTaskBtn">Add Task</button>
     </section>
 
-    <!-- Buttons -->
-    <section id="taskButtons">
-      <button onclick="location.href='all-tasks.html'">View All Tasks</button>
-          </section>
-
-    <!-- Task List -->
-    <section id="todayTasks">
-      <h1>Today's Tasks</h1>
-      <div id="todayTasksList"></div>
-    </section>
-
-    <!-- Revision Tasks -->
-    <section id="revisionTasks">
-      <h1>Revision Tasks Due Today</h1>
-      <div id="revisionTasksList"></div>
+    <section id="tasksOverview">
+      <h2>Your Tasks</h2>
+      <div id="todayTasks"></div>
+      <div id="revisionTasks"></div>
     </section>
   </main>
 
-  <!-- Footer -->
+  <!-- Footer Section -->
   <footer>
-    <p>Task Manager &copy; 2025</p>
+    <div id="settingsButtonContainer">
+      <button onclick="window.location.href = 'settings.html'">Settings</button>
+      <button onclick="downloadTasks()">Download Tasks</button>
+    </div>
+    <p>&copy; 2025 Task Manager</p>
   </footer>
 
   <script src="app.js"></script>
