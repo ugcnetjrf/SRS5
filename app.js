@@ -77,7 +77,6 @@ function addTask() {
 
   renderTodayTasks();
   renderRevisionTasks();
-  renderAllTasksGroupedByDate();
 
   showPopup("Task added successfully!");
 }
@@ -184,7 +183,7 @@ function renderAllTasksGroupedByDate() {
       grouped[date].forEach((task) => {
         const taskDiv = document.createElement("div");
         taskDiv.className = "task-entry";
-        taskDiv.innerHTML = `
+        taskDiv.innerHTML = ` 
           <h4>📌 ${task.title}</h4>
           <p>📝 ${task.detail}</p>
           <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
@@ -255,22 +254,6 @@ function uploadTasks(event) {
     }
   };
   reader.readAsText(file);
-}
-
-// Update SRT Intervals
-function saveCustomIntervals() {
-  const aggressiveInputs = document.querySelectorAll(".aggressive-input");
-  const relaxedInputs = document.querySelectorAll(".relaxed-input");
-
-  customRegimes.Aggressive = Array.from(aggressiveInputs)
-    .map((el) => parseInt(el.value))
-    .filter((n) => !isNaN(n));
-  customRegimes.Relaxed = Array.from(relaxedInputs)
-    .map((el) => parseInt(el.value))
-    .filter((n) => !isNaN(n));
-
-  localStorage.setItem("customRegimes", JSON.stringify(customRegimes));
-  alert("SRT intervals updated!");
 }
 
 // Initial Setup
