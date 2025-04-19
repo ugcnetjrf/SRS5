@@ -209,12 +209,12 @@ function deleteTask(id) {
 function resetAllTasks() {
   if (confirm("Delete all tasks?")) {
     tasks = [];
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    
-    // Clear the task sections immediately
-    renderTodayTasks();
-    renderRevisionTasks();
-    renderAllTasksGroupedByDate();
+    localStorage.removeItem("tasks"); // Immediately clear tasks from localStorage
+
+    // Immediately clear the task sections on the page without needing a refresh
+    document.getElementById("todayTasks").innerHTML = "<p>No tasks added today.</p>";
+    document.getElementById("revisionTasks").innerHTML = "<p>No revisions due today.</p>";
+    document.getElementById("allTasksContainer").innerHTML = "";
 
     showPopup("All tasks have been deleted successfully!");
   }
