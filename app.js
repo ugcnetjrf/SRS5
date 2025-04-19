@@ -46,10 +46,16 @@ function addTask() {
     return;
   }
 
+  // Always fetch the latest from localStorage
+  const storedRegimes = JSON.parse(localStorage.getItem("customRegimes")) || {
+    Aggressive: [1, 2, 4, 7, 10],
+    Relaxed: [2, 5, 10, 20, 30],
+  };
+
   const intervals =
     srtRegime === "Standard"
       ? [1, 3, 7, 14, 21]
-      : customRegimes[srtRegime] || [];
+      : storedRegimes[srtRegime] || [];
 
   const revisionDates = intervals.map((i) => {
     const d = new Date(date);
@@ -64,7 +70,7 @@ function addTask() {
     date,
     srtRegime,
     revisionDates,
-    completedRevisions: []
+    completedRevisions: [],
   };
 
   tasks.push(task);
@@ -183,7 +189,7 @@ function renderAllTasksGroupedByDate() {
       grouped[date].forEach((task) => {
         const taskDiv = document.createElement("div");
         taskDiv.className = "task-entry";
-        taskDiv.innerHTML = `
+        taskDiv.innerHTML = `  
           <h4>📌 ${task.title}</h4>
           <p>📝 ${task.detail}</p>
           <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
