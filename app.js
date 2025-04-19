@@ -137,19 +137,25 @@ function renderRevisionTasks() {
   });
 }
 
-// Download All Tasks Functionality
+// Download All Tasks Functionality (as .txt)
 function downloadAllTasks() {
-  const tasksJson = JSON.stringify(tasks, null, 2);
-  const blob = new Blob([tasksJson], { type: "application/json" });
+  let tasksText = tasks.map(
+    (task) =>
+      `Title: ${task.title}\nDetail: ${task.detail}\nDate: ${task.date}\nRegime: ${task.srtRegime}\nRevision Dates: ${task.revisionDates.join(
+        ", "
+      )}\n\n`
+  ).join("");
+
+  const blob = new Blob([tasksText], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "tasks.json";
+  link.download = "tasks.txt";
   link.click();
   URL.revokeObjectURL(url);
 }
 
-// Upload Tasks Functionality
+// Upload Tasks Functionality (from .txt)
 function uploadTasks(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -157,16 +163,37 @@ function uploadTasks(event) {
   const reader = new FileReader();
   reader.onload = () => {
     try {
-      const uploadedTasks = JSON.parse(reader.result);
-      if (Array.isArray(uploadedTasks)) {
-        tasks = uploadedTasks;
-        saveTasks();
-        renderTodayTasks();
-        renderRevisionTasks();
-        showPopup("Tasks uploaded successfully!");
-      } else {
-        showPopup("Invalid task format.");
-      }
+      const fileContent = reader.result;
+      const taskArray = fileContent
+        .split("\n\n")
+        .map((taskText) => {
+          const taskDetails = taskText.split("\n");
+          const title = taskDetails[0].replace("Title: ", "");
+          const detail = taskDetails[1].replace("Detail: ", "");
+          const date = taskDetails[2].replace("Date: ", "");
+          const regime = taskDetails[3].replace("Regime: ", "");
+          const revisionDates = taskDetails
+            .slice(4)
+            .join("\n")
+            .replace("Revision Dates: ", "")
+            .split(", ");
+
+          return {
+            id: Date.now(),
+            title,
+            detail,
+            date,
+            srtRegime: regime,
+            revisionDates,
+            completedRevisions: []
+          };
+        });
+
+      tasks = taskArray;
+      saveTasks();
+      renderTodayTasks();
+      renderRevisionTasks();
+      showPopup("Tasks uploaded successfully!");
     } catch (error) {
       showPopup("Error reading file.");
     }
