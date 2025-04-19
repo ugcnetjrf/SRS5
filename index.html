@@ -10,51 +10,47 @@
 
   <!-- Header Section -->
   <header>
-    <h1>Welcome to Your Task Manager</h1>
-    <p>Keep track of your tasks and boost your productivity!</p>
+    <h1>Task Manager</h1>
   </header>
 
-  <!-- Main Content Section -->
-  <main>
-    <section id="taskControls">
-      <h2>Add a New Task</h2>
-      <div>
-        <label for="taskTitle">Task Title:</label>
-        <input type="text" id="taskTitle" placeholder="Task Title">
-      </div>
-      <div>
-        <label for="taskDetail">Task Details:</label>
-        <textarea id="taskDetail" placeholder="Details about the task..."></textarea>
-      </div>
-      <div>
-        <label for="taskDate">Due Date:</label>
-        <input type="date" id="taskDate">
-      </div>
-      <div>
-        <label for="srtRegime">SRT Regime:</label>
-        <select id="srtRegime">
-          <option value="Standard">Standard</option>
-          <option value="Aggressive">Aggressive</option>
-          <option value="Relaxed">Relaxed</option>
-        </select>
-      </div>
-      <button id="addTaskBtn">Add Task</button>
-    </section>
+  <!-- Add Task Section -->
+  <section id="addTaskSection">
+    <h2>Add a New Task</h2>
+    <form id="taskForm">
+      <input type="text" id="taskTitle" placeholder="Task Title" required>
+      <textarea id="taskDetail" placeholder="Task Details" required></textarea>
+      <input type="date" id="taskDate" required>
+      <select id="srtRegime" required>
+        <option value="Standard">Standard</option>
+        <option value="Aggressive">Aggressive</option>
+        <option value="Relaxed">Relaxed</option>
+      </select>
+      <button type="button" id="addTaskButton">Add Task</button>
+    </form>
+  </section>
 
-    <section id="tasksOverview">
-      <h2>Your Tasks</h2>
-      <div id="todayTasks"></div>
-      <div id="revisionTasks"></div>
-    </section>
-  </main>
+  <!-- Revision Due Today Section -->
+  <section id="revisionDueTodaySection">
+    <h2>Revision Due Today</h2>
+    <div id="revisionTasks">
+      <!-- Dynamically generated content -->
+      <p>No revisions due today.</p>
+    </div>
+  </section>
+
+  <!-- Today's Entries Section -->
+  <section id="todaysEntriesSection">
+    <h2>Today's Entries</h2>
+    <div id="todayTasks">
+      <!-- Dynamically generated content -->
+      <p>No tasks added today.</p>
+    </div>
+  </section>
 
   <!-- Footer Section -->
   <footer>
-    <div id="settingsButtonContainer">
-      <button onclick="window.location.href = 'settings.html'">Settings</button>
-      <button onclick="downloadTasks()">Download Tasks</button>
-    </div>
-    <p>&copy; 2025 Task Manager</p>
+    <button id="settingsButton">Settings</button>
+    <button id="downloadButton">Download Tasks</button>
   </footer>
 
   <script src="app.js"></script>
