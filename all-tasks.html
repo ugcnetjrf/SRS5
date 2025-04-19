@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>All Tasks</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>All Tasks</h1>
-
-    <div id="allTasksContainer"></div>
-
-    <div class="button-row">
+  <div id="all-tasks-container">
+    <header>
       <button onclick="window.location.href='index.html'">Back to Home</button>
+      <button id="downloadTasksBtn">Download All Tasks</button>
+      <input type="file" id="uploadTasksBtn" accept=".txt" />
+      <button onclick="resetAllTasks()">Reset All</button>
+    </header>
+
+    <h1>All Tasks</h1>
+    <div id="allTasksContainer">
+      <!-- Tasks will be grouped and displayed here -->
     </div>
   </div>
 
