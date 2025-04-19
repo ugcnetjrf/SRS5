@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Settings</h1>
+    <button id="backBtn">Back to Add Tasks</button>
+  </header>
+
+  <div class="settings-container">
+    <h2>Configure Custom SRT Intervals</h2>
+    
+    <h3>Aggressive</h3>
+    <div>
+      <label>1 day: <input type="number" id="aggressive1" value="1"></label>
+      <label>2 days: <input type="number" id="aggressive2" value="2"></label>
+      <label>4 days: <input type="number" id="aggressive4" value="4"></label>
+      <label>7 days: <input type="number" id="aggressive7" value="7"></label>
+      <label>10 days: <input type="number" id="aggressive10" value="10"></label>
+    </div>
+
+    <h3>Relaxed</h3>
+    <div>
+      <label>2 days: <input type="number" id="relaxed2" value="2"></label>
+      <label>5 days: <input type="number" id="relaxed5" value="5"></label>
+      <label>10 days: <input type="number" id="relaxed10" value="10"></label>
+      <label>20 days: <input type="number" id="relaxed20" value="20"></label>
+      <label>30 days: <input type="number" id="relaxed30" value="30"></label>
+    </div>
+
+    <button onclick="saveCustomIntervals()">Save</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
