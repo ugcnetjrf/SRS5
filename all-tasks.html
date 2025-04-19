@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Tasks</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tasks</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>All Tasks</h1>
 
-    <button id="backToHomeBtn" class="btn">Back to Home</button>
+    <div class="container">
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <button id="backToHomeBtn" class="btn">Back to Home</button>
+            <button id="downloadTasksBtn" class="btn">Download All Tasks</button>
+            <input type="file" id="uploadTasksBtn" class="file-input" accept=".txt">
+            <button id="resetTasksBtn" class="btn">Reset All</button>
+        </div>
 
-    <!-- Download, Upload, Reset Buttons -->
-    <div class="task-buttons">
-      <button id="downloadTasksBtn" class="btn">Download All Tasks</button>
-      <input type="file" id="uploadTasksBtn" accept=".txt" class="file-input" />
-      <button id="resetTasksBtn" class="btn">Reset All</button>
+        <!-- All Tasks Section -->
+        <div id="allTasksContainer">
+            <h2>All Tasks</h2>
+            <p>Here are all the tasks grouped by revision date:</p>
+            <!-- Task Groups will be rendered here -->
+        </div>
+
     </div>
 
-    <div id="allTasksContainer" class="task-list"></div>
-  </div>
-
-  <script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
