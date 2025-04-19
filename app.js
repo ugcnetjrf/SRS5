@@ -75,88 +75,9 @@ function addTask() {
   dateInput.value = new Date().toISOString().split("T")[0];
   srtSelect.value = "Standard";
 
-  renderTodayTasks();
-  renderRevisionTasks();
+  renderAllTasksGroupedByDate();
 
   showPopup("Task added successfully!");
-}
-
-// Render Daily Tasks
-function renderTodayTasks() {
-  const today = new Date().toISOString().split("T")[0];
-  const container = document.getElementById("todayTasks");
-  container.innerHTML = "";
-
-  const todayTasks = tasks.filter((t) => t.date === today);
-
-  if (todayTasks.length === 0) {
-    container.innerHTML = "<p>No tasks added today.</p>";
-    return;
-  }
-
-  todayTasks.forEach((task) => {
-    const div = document.createElement("div");
-    div.className = "task-item task-red";
-    div.textContent = task.title;
-
-    div.addEventListener("click", () => {
-      alert(task.detail);
-    });
-
-    container.appendChild(div);
-  });
-}
-
-// Render Revision Tasks Due Today
-function renderRevisionTasks() {
-  const today = new Date().toISOString().split("T")[0];
-  const container = document.getElementById("revisionTasks");
-  container.innerHTML = "";
-
-  const dueTasks = tasks.filter(
-    (task) =>
-      task.revisionDates.includes(today) &&
-      !task.completedRevisions.includes(today)
-  );
-
-  if (dueTasks.length === 0) {
-    container.innerHTML = "<p>No revisions due today.</p>";
-    return;
-  }
-
-  dueTasks.forEach((task) => {
-    const div = document.createElement("div");
-    div.className = "task-item task-red";
-    div.textContent = task.title;
-
-    div.addEventListener("click", () => {
-      alert(task.detail);
-    });
-
-    div.addEventListener("swipeleft", () => markRevisionDone(task, div, today));
-    div.addEventListener("swiperight", () =>
-      undoRevisionDone(task, div, today)
-    );
-
-    container.appendChild(div);
-  });
-}
-
-// Mark and Undo Revision
-function markRevisionDone(task, div, date) {
-  if (!task.completedRevisions.includes(date)) {
-    task.completedRevisions.push(date);
-    div.classList.remove("task-red");
-    div.classList.add("task-green");
-    saveTasks();
-  }
-}
-
-function undoRevisionDone(task, div, date) {
-  task.completedRevisions = task.completedRevisions.filter((d) => d !== date);
-  div.classList.remove("task-green");
-  div.classList.add("task-red");
-  saveTasks();
 }
 
 // Render All Tasks Grouped by Date
@@ -210,8 +131,6 @@ function resetAllTasks() {
   if (confirm("Delete all tasks?")) {
     tasks = [];
     saveTasks();
-    renderTodayTasks();
-    renderRevisionTasks();
     renderAllTasksGroupedByDate();
   }
 }
@@ -242,8 +161,6 @@ function uploadTasks(event) {
       if (Array.isArray(data)) {
         tasks = data;
         saveTasks();
-        renderTodayTasks();
-        renderRevisionTasks();
         renderAllTasksGroupedByDate();
         alert("Tasks uploaded successfully!");
       } else {
@@ -256,30 +173,7 @@ function uploadTasks(event) {
   reader.readAsText(file);
 }
 
-// Update SRT Intervals
-function saveCustomIntervals() {
-  const aggressiveInputs = document.querySelectorAll(".aggressive-input");
-  const relaxedInputs = document.querySelectorAll(".relaxed-input");
-
-  customRegimes.Aggressive = Array.from(aggressiveInputs)
-    .map((el) => parseInt(el.value))
-    .filter((n) => !isNaN(n));
-  customRegimes.Relaxed = Array.from(relaxedInputs)
-    .map((el) => parseInt(el.value))
-    .filter((n) => !isNaN(n));
-
-  localStorage.setItem("customRegimes", JSON.stringify(customRegimes));
-  alert("SRT intervals updated!");
-}
-
 // Initial Setup
 document.addEventListener("DOMContentLoaded", () => {
-  if (document.getElementById("taskDate")) {
-    document.getElementById("taskDate").value =
-      new Date().toISOString().split("T")[0];
-  }
-
-  if (document.getElementById("todayTasks")) renderTodayTasks();
-  if (document.getElementById("revisionTasks")) renderRevisionTasks();
   if (document.getElementById("allTasksContainer")) renderAllTasksGroupedByDate();
 });
