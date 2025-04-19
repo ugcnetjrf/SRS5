@@ -139,7 +139,7 @@
 
         <h2>Upload All Tasks</h2>
         <p>This will permanently upload all tasks from your device.</p>
-        <button id="resetAllButton">Upload Tasks</button>
+        <button id="uploadAllButton">Upload Tasks</button>
     </div>
 </div>
 
@@ -186,6 +186,20 @@
 
             localStorage.setItem("customRegimes", JSON.stringify(intervals));
             alert("Spaced Repetition Intervals saved successfully!");
+        });
+
+        // Handle Upload All Tasks
+        document.getElementById("uploadAllButton").addEventListener("click", function () {
+            if (confirm("Are you sure you want to delete all tasks? This action cannot be undone.")) {
+                function uploadTasks(event) {
+  const file = event.target.files[0];
+  if (!file || !file.name.endsWith(".txt")) {
+    alert("Please upload a valid .txt file");
+    return;
+  }  // Remove all tasks from localStorage
+                alert("All tasks have been updated.");
+                window.location.href = "all-tasks.html";  // Redirect to all-tasks page after resetting
+            }
         });
 
         // Handle Reset All Tasks
