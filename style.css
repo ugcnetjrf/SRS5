@@ -1,202 +1,159 @@
-/* General Styles */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #22f5b1, #5a83e8);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
 .container {
-  max-width: 800px;
-  margin: 30px auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
   border-radius: 10px;
-}
-
-button {
-  background-color: #22F5B1;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  font-size: 14px;
-  margin: 5px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #1eb8a0;
-}
-
-input[type="file"] {
-  padding: 10px;
-  font-size: 14px;
-  margin: 5px;
-  border-radius: 5px;
-}
-
-/* All Tasks Page */
-#backToHome {
-  margin-bottom: 20px;
-}
-
-.task-management-buttons {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.task-management-buttons button,
-input[type="file"] {
-  flex: 1;
-}
-
-#allTasksContainer {
-  margin-top: 30px;
-}
-
-.task-group {
-  margin-bottom: 30px;
-}
-
-.task-group h3 {
-  font-size: 20px;
-  color: #333;
-  text-decoration: underline;
-}
-
-.task-entry {
-  background-color: #f9f9f9;
-  padding: 15px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.task-entry h4 {
-  margin: 0;
-  font-size: 18px;
-  color: #22F5B1;
-}
-
-.task-entry p {
-  font-size: 14px;
-  margin: 10px 0;
-  color: #666;
-}
-
-.srt-regime,
-.revision-dates {
-  font-size: 12px;
-  color: #666;
-}
-
-.delete-btn {
-  background-color: #f44336;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  font-size: 12px;
-  cursor: pointer;
-  border-radius: 3px;
-  margin-top: 10px;
-}
-
-.delete-btn:hover {
-  background-color: #e53935;
-}
-
-.task-entry .srt-regime {
-  font-weight: bold;
-}
-
-.task-entry .revision-dates {
-  font-weight: bold;
-}
-
-button {
-  transition: background-color 0.3s;
-}
-
-input[type="file"] {
-  margin-top: 10px;
-}
-
-h1, h2, h3 {
-  font-family: 'Arial', sans-serif;
-  color: #333;
-}
-
-h4 {
-  color: #333;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
 h1 {
-  font-size: 28px;
+  text-align: center;
+  color: #333;
+  font-size: 2.5em;
 }
 
 h2 {
-  font-size: 24px;
-}
-
-h3 {
-  font-size: 20px;
+  color: #333;
   margin-bottom: 15px;
 }
 
-/* Specific Button Styles */
-button#downloadTasks {
-  background-color: #4CAF50;
+.task-input, .tasks-section {
+  margin-bottom: 20px;
 }
 
-button#downloadTasks:hover {
-  background-color: #45a049;
+input[type="text"], textarea, select, input[type="date"], button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid #22f5b1;
+  border-radius: 8px;
+  font-size: 1em;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
-button#resetTasks {
-  background-color: #f44336;
+input[type="text"], textarea, input[type="date"] {
+  background-color: #f9f9f9;
 }
 
-button#resetTasks:hover {
-  background-color: #e53935;
+button {
+  background-color: #22f5b1;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
-button#uploadTasks {
-  background-color: #2196F3;
+button:hover {
+  background-color: #19cc97;
 }
 
-button#uploadTasks:hover {
-  background-color: #1976d2;
+textarea {
+  height: 100px;
 }
 
-button#backToHome {
-  background-color: #009688;
+select {
+  background-color: #f9f9f9;
 }
 
-button#backToHome:hover {
-  background-color: #00796b;
+#todayTasks, #revisionTasks, #allTasksContainer {
+  margin-top: 20px;
 }
 
-/* Responsive Design for Mobile Devices */
-@media (max-width: 768px) {
-  .task-management-buttons {
-    flex-direction: column;
-  }
-
-  .task-management-buttons button,
-  input[type="file"] {
-    margin-bottom: 10px;
-  }
+.task-item {
+  background-color: #e0f7f1;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Helper Classes */
-.hidden {
+.task-item:hover {
+  background-color: #d1f1e2;
+}
+
+.task-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.file-input {
   display: none;
 }
 
-.show {
-  display: block;
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn {
+  background-color: #5a83e8;
+  color: white;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 1.1em;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #4b72c4;
+}
+
+#backToHomeBtn {
+  background-color: #ff6f61;
+}
+
+#backToHomeBtn:hover {
+  background-color: #ff4a39;
+}
+
+.task-group h3 {
+  color: #333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.srt-regime {
+  font-size: 0.9em;
+  color: #888;
+  margin-top: 5px;
+}
+
+.delete-btn {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #e55847;
 }
