@@ -183,7 +183,7 @@ function renderAllTasksGroupedByDate() {
       grouped[date].forEach((task) => {
         const taskDiv = document.createElement("div");
         taskDiv.className = "task-entry";
-        taskDiv.innerHTML = ` 
+        taskDiv.innerHTML = `
           <h4>📌 ${task.title}</h4>
           <p>📝 ${task.detail}</p>
           <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
@@ -258,11 +258,6 @@ function uploadTasks(event) {
 
 // Initial Setup
 document.addEventListener("DOMContentLoaded", () => {
-  if (document.getElementById("taskDate")) {
-    document.getElementById("taskDate").value =
-      new Date().toISOString().split("T")[0];
-  }
-
   if (document.getElementById("todayTasks")) renderTodayTasks();
   if (document.getElementById("revisionTasks")) renderRevisionTasks();
   if (document.getElementById("allTasksContainer")) renderAllTasksGroupedByDate();
