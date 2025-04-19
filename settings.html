@@ -42,6 +42,10 @@
             margin-bottom: 20px;
         }
 
+        .setting-item {
+            margin-bottom: 20px;
+        }
+
         button {
             padding: 10px 20px;
             border: none;
@@ -59,6 +63,23 @@
         #resetAllButton:hover {
             background-color: #FF4500;
         }
+
+        .srt-intervals {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .srt-intervals label {
+            font-size: 14px;
+            margin: 5px;
+        }
+
+        .srt-intervals input {
+            width: 60px;
+            padding: 5px;
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -68,17 +89,69 @@
     </div>
 
     <div class="settings-container">
+        <h2>Spaced Repetition Interval Settings</h2>
+        <div class="setting-item">
+            <p>Set your Spaced Repetition Intervals (in days):</p>
+            <div class="srt-intervals">
+                <label for="interval1">+1 day</label>
+                <input type="number" id="interval1" min="1" value="1">
+                <label for="interval3">+3 days</label>
+                <input type="number" id="interval3" min="1" value="3">
+                <label for="interval7">+7 days</label>
+                <input type="number" id="interval7" min="1" value="7">
+                <label for="interval14">+14 days</label>
+                <input type="number" id="interval14" min="1" value="14">
+                <label for="interval21">+21 days</label>
+                <input type="number" id="interval21" min="1" value="21">
+            </div>
+            <button id="saveIntervalsButton">Save Intervals</button>
+        </div>
+
         <h2>Reset All Tasks</h2>
         <p>This will permanently delete all tasks from your list.</p>
         <button id="resetAllButton">Reset All Tasks</button>
     </div>
 
     <script>
+        // Handle Spaced Repetition Intervals Save
+        document.getElementById("saveIntervalsButton").addEventListener("click", function () {
+            const interval1 = document.getElementById("interval1").value;
+            const interval3 = document.getElementById("interval3").value;
+            const interval7 = document.getElementById("interval7").value;
+            const interval14 = document.getElementById("interval14").value;
+            const interval21 = document.getElementById("interval21").value;
+
+            const intervals = {
+                interval1: parseInt(interval1),
+                interval3: parseInt(interval3),
+                interval7: parseInt(interval7),
+                interval14: parseInt(interval14),
+                interval21: parseInt(interval21)
+            };
+
+            localStorage.setItem("srtIntervals", JSON.stringify(intervals));
+            alert("Spaced Repetition Intervals saved successfully!");
+        });
+
+        // Handle Reset All Tasks
         document.getElementById("resetAllButton").addEventListener("click", function () {
             if (confirm("Are you sure you want to delete all tasks? This action cannot be undone.")) {
                 localStorage.removeItem("tasks");  // Remove all tasks from localStorage
                 alert("All tasks have been deleted.");
                 window.location.href = "all-tasks.html";  // Redirect to all-tasks page after resetting
+            }
+        });
+
+        // Load saved Spaced Repetition Intervals on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedIntervals = JSON.parse(localStorage.getItem("srtIntervals"));
+
+            if (savedIntervals) {
+                document.getElementById("interval1").value = savedIntervals.interval1 || 1;
+                document.getElementById("interval3").value = savedIntervals.interval3 || 3;
+                document.getElementById("interval7").value = savedIntervals.interval7 || 7;
+                document.getElementById("interval14").value = savedIntervals.interval14 || 14;
+                document.getElementById("interval21").value = savedIntervals.interval21 || 21;
             }
         });
     </script>
