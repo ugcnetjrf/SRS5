@@ -1,38 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Tasks</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
 </head>
+
 <body>
-    <div class="container">
-        <h1>All Tasks</h1>
-
-        <!-- Display the task groups (grouped by dates) -->
-        <div id="allTasksContainer"></div>
-
-        <!-- Buttons Container -->
-        <div style="text-align: center; margin-top: 20px;">
-            <!-- "Settings" Button -->
-            <div id="settingsButtonContainer" style="margin-bottom: 10px;">
-                <!-- The "Settings" button will be dynamically inserted here by app.js -->
-            </div>
-
-            <!-- "Download All Tasks" Button -->
-            <button id="downloadTasksBtn" onclick="downloadTasks()" style="padding: 10px 20px; background-color: #22F5B1; border: none; color: white; border-radius: 5px; cursor: pointer;">
-                Download All Tasks
+    <div id="header">
+        <div id="buttonsContainer" style="display: flex; justify-content: space-between; margin: 20px;">
+            <!-- Settings Button -->
+            <button id="settingsButton" style="padding: 10px 20px; background-color: #FFD700; border: none; color: white; border-radius: 5px; cursor: pointer;">
+                Settings
             </button>
-        </div>
 
-        <!-- Reset All Tasks Button -->
-        <div style="text-align: center; margin-top: 20px;">
-            <button onclick="resetAllTasks()" style="padding: 10px 20px; background-color: #FF6347; border: none; color: white; border-radius: 5px; cursor: pointer;">
+            <!-- Reset All Button -->
+            <button id="resetAllButton" style="padding: 10px 20px; background-color: #22F5B1; border: none; color: white; border-radius: 5px; cursor: pointer;">
                 Reset All
+            </button>
+
+            <!-- Download Task Button -->
+            <button id="downloadTaskButton" style="padding: 10px 20px; background-color: #FF6347; border: none; color: white; border-radius: 5px; cursor: pointer;">
+                Download Task
             </button>
         </div>
     </div>
+
+    <div id="allTasksContainer" style="padding: 20px;">
+        <!-- All Tasks will be displayed here -->
+    </div>
+
+    <div id="settingsButtonContainer"></div>
+
+    <script>
+        // Event Listeners for the Buttons
+        document.getElementById("settingsButton").addEventListener("click", function () {
+            window.location.href = "settings.html";  // Link to settings page
+        });
+
+        document.getElementById("resetAllButton").addEventListener("click", function () {
+            if (confirm("Are you sure you want to delete all tasks?")) {
+                localStorage.removeItem("tasks");  // Remove all tasks from localStorage
+                alert("All tasks have been deleted.");
+                renderAllTasksGroupedByDate();  // Re-render tasks (which will be none)
+            }
+        });
+
+        document.getElementById("downloadTaskButton").addEventListener("click", function () {
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            if (tasks.length === 0) {
+                alert("No tasks to download.");
+                return;
+            }
+
+            const blob = new Blob([JSON.stringify(tasks, null, 2)], {
+                type: "text/plain"
+            });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "tasks_backup.txt";
+            a.click();
+        });
+
+        // Render Tasks
+        function renderAllTasksGroupedByDate() {
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            const container = document.getElementById("allTasksContainer");
+            container.innerHTML = "";  // Clear current content
+
+            if (tasks.length === 0) {
+                container.innerHTML = "<p>No tasks available.</p>";
+                return;
+            }
+
+            const grouped = {};
+            tasks.forEach((task) => {
+                if (!grouped[task.date]) grouped[task.date] = [];
+                grouped[task.date].push(task);
+            });
+
+            Object.keys(grouped).forEach((date) => {
+                const section = document.createElement("div");
+                section.className = "task-group";
+
+                const header = document.createElement("h3");
+                header.textContent = date;
+                section.appendChild(header);
+
+                grouped[date].forEach((task) => {
+                    const taskDiv = document.createElement("div");
+                    taskDiv.className = "task-entry";
+                    taskDiv.innerHTML = `
+                        <h4>📌 ${task.title}</h4>
+                        <p>📝 ${task.detail}</p>
+                        <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
+                        <button onclick="deleteTask(${task.id})" class="delete-btn">Delete</button>
+                    `;
+                    section.appendChild(taskDiv);
+                });
+
+                container.appendChild(section);
+            });
+        }
+
+        // Delete Individual Task
+        function deleteTask(id) {
+            if (confirm("Delete this task permanently?")) {
+                let tasks = JSON.parse(localStorage.getItem("tasks"));
+                tasks = tasks.filter((t) => t.id !== id);
+                localStorage.setItem("tasks", JSON.stringify(tasks));
+                renderAllTasksGroupedByDate();  // Re-render tasks after deletion
+            }
+        }
+
+        // Initial Setup
+        document.addEventListener("DOMContentLoaded", renderAllTasksGroupedByDate);
+    </script>
 </body>
+
 </html>
