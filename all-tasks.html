@@ -20,12 +20,75 @@
         <!-- All Tasks Section -->
         <div id="allTasksContainer">
             <h2>All Tasks</h2>
-            <p>Here are all the tasks grouped by revision date:</p>
+            <p>Here are all the tasks created so far, grouped by creation date:</p>
             <!-- Task Groups will be rendered here -->
         </div>
 
     </div>
 
     <script src="app.js"></script>
+    <script>
+        // Back to Home Button
+        document.getElementById("backToHomeBtn").addEventListener("click", function() {
+            window.location.href = "index.html";
+        });
+
+        // Download All Tasks
+        document.getElementById("downloadTasksBtn").addEventListener("click", function() {
+            downloadTasks();
+        });
+
+        // Upload Tasks
+        document.getElementById("uploadTasksBtn").addEventListener("change", function(event) {
+            uploadTasks(event);
+        });
+
+        // Reset All Tasks
+        document.getElementById("resetTasksBtn").addEventListener("click", function() {
+            resetAllTasks();
+        });
+        
+        // Function to render all tasks grouped by date
+        function renderAllTasksGroupedByDate() {
+            const container = document.getElementById("allTasksContainer");
+            container.innerHTML = "";
+
+            const grouped = {};
+            tasks.forEach((task) => {
+                if (!grouped[task.date]) grouped[task.date] = [];
+                grouped[task.date].push(task);
+            });
+
+            Object.keys(grouped)
+                .sort()
+                .forEach((date) => {
+                    const section = document.createElement("div");
+                    section.className = "task-group";
+
+                    const header = document.createElement("h3");
+                    header.textContent = date;
+                    section.appendChild(header);
+
+                    grouped[date].forEach((task) => {
+                        const taskDiv = document.createElement("div");
+                        taskDiv.className = "task-entry";
+                        taskDiv.innerHTML = `
+                            <h4>📌 ${task.title}</h4>
+                            <p>📝 ${task.detail}</p>
+                            <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
+                            <button onclick="deleteTask(${task.id})" class="delete-btn">Delete</button>
+                        `;
+                        section.appendChild(taskDiv);
+                    });
+
+                    container.appendChild(section);
+                });
+        }
+
+        // Initial setup
+        document.addEventListener("DOMContentLoaded", () => {
+            renderAllTasksGroupedByDate();
+        });
+    </script>
 </body>
 </html>
