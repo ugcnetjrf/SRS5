@@ -7,33 +7,147 @@
     <title>All Tasks</title>
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fb; /* Light background matching index.html */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #22F5B1; /* Same greenish color as index */
+            padding: 10px 0;
+        }
+
+        #buttonsContainer {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #settingsButton {
+            background-color: #FFD700; /* Golden color for Settings */
+        }
+
+        #resetAllButton {
+            background-color: #22F5B1; /* Green color for Reset */
+        }
+
+        #downloadTaskButton {
+            background-color: #FF6347; /* Red for Download */
+        }
+
+        #settingsButton:hover {
+            background-color: #FFB800;
+        }
+
+        #resetAllButton:hover {
+            background-color: #1C9D8C;
+        }
+
+        #downloadTaskButton:hover {
+            background-color: #FF4500;
+        }
+
+        #allTasksContainer {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-group {
+            margin-bottom: 20px;
+        }
+
+        .task-entry {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 5px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-entry h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .task-entry p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .task-entry .srt-regime {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .task-entry button {
+            background-color: #FF6347;
+            color: white;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 14px;
+        }
+
+        .task-entry button:hover {
+            background-color: #FF4500;
+        }
+
+        .task-entry button:active {
+            background-color: #FF6347;
+        }
+    </style>
 </head>
 
 <body>
     <div id="header">
-        <div id="buttonsContainer" style="display: flex; justify-content: space-between; margin: 20px;">
+        <div id="buttonsContainer">
             <!-- Settings Button -->
-            <button id="settingsButton" style="padding: 10px 20px; background-color: #FFD700; border: none; color: white; border-radius: 5px; cursor: pointer;">
+            <button id="settingsButton">
                 Settings
             </button>
 
             <!-- Reset All Button -->
-            <button id="resetAllButton" style="padding: 10px 20px; background-color: #22F5B1; border: none; color: white; border-radius: 5px; cursor: pointer;">
+            <button id="resetAllButton">
                 Reset All
             </button>
 
             <!-- Download Task Button -->
-            <button id="downloadTaskButton" style="padding: 10px 20px; background-color: #FF6347; border: none; color: white; border-radius: 5px; cursor: pointer;">
+            <button id="downloadTaskButton">
                 Download Task
             </button>
         </div>
     </div>
 
-    <div id="allTasksContainer" style="padding: 20px;">
+    <div id="allTasksContainer">
         <!-- All Tasks will be displayed here -->
     </div>
-
-    <div id="settingsButtonContainer"></div>
 
     <script>
         // Event Listeners for the Buttons
