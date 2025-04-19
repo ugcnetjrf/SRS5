@@ -258,30 +258,18 @@ function uploadTasks(event) {
 
 // Update SRT Intervals
 function saveCustomIntervals() {
-  // Get the interval values from the inputs
-  customRegimes.Aggressive = [
-    parseInt(document.getElementById("aggressive1").value),
-    parseInt(document.getElementById("aggressive2").value),
-    parseInt(document.getElementById("aggressive4").value),
-    parseInt(document.getElementById("aggressive7").value),
-    parseInt(document.getElementById("aggressive10").value),
-  ];
+  const aggressiveInputs = document.querySelectorAll(".aggressive-input");
+  const relaxedInputs = document.querySelectorAll(".relaxed-input");
 
-  customRegimes.Relaxed = [
-    parseInt(document.getElementById("relaxed2").value),
-    parseInt(document.getElementById("relaxed5").value),
-    parseInt(document.getElementById("relaxed10").value),
-    parseInt(document.getElementById("relaxed20").value),
-    parseInt(document.getElementById("relaxed30").value),
-  ];
+  customRegimes.Aggressive = Array.from(aggressiveInputs)
+    .map((el) => parseInt(el.value))
+    .filter((n) => !isNaN(n));
+  customRegimes.Relaxed = Array.from(relaxedInputs)
+    .map((el) => parseInt(el.value))
+    .filter((n) => !isNaN(n));
 
-  // Store the updated values in localStorage
   localStorage.setItem("customRegimes", JSON.stringify(customRegimes));
-
-  alert("SRT intervals have been saved!");
-
-  // Optionally navigate back to the add-tasks page or do any additional tasks
-  window.location.href = "add-tasks.html"; // Navigate back after saving
+  alert("SRT intervals updated!");
 }
 
 // Initial Setup
@@ -295,19 +283,19 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("revisionTasks")) renderRevisionTasks();
   if (document.getElementById("allTasksContainer")) renderAllTasksGroupedByDate();
 
-  // Add event listener for "Settings" button in add-tasks.html
-  const settingsBtn = document.getElementById("settingsBtn");
-  if (settingsBtn) {
-    settingsBtn.addEventListener("click", () => {
-      window.location.href = "settings.html"; // Navigate to settings page
-    });
-  }
-
-  // Handle Back button on settings page
-  const backBtn = document.getElementById("backBtn");
-  if (backBtn) {
-    backBtn.addEventListener("click", () => {
-      window.location.href = "add-tasks.html"; // Navigate back to add tasks
-    });
+  // Add Settings Button in All Tasks Page
+  if (document.getElementById("settingsButtonContainer")) {
+    const settingsBtn = document.createElement("button");
+    settingsBtn.textContent = "Settings";
+    settingsBtn.style.padding = "10px 20px";
+    settingsBtn.style.backgroundColor = "#FFD700";
+    settingsBtn.style.border = "none";
+    settingsBtn.style.color = "white";
+    settingsBtn.style.borderRadius = "5px";
+    settingsBtn.style.cursor = "pointer";
+    settingsBtn.onclick = () => {
+      window.location.href = "settings.html"; // Assuming there's a settings page
+    };
+    document.getElementById("settingsButtonContainer").appendChild(settingsBtn);
   }
 });
