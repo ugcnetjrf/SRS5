@@ -1,44 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Task Manager</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Task Manager</h1>
 
-    <!-- Task Input Form -->
-    <div class="task-input">
-      <h2>Add a New Task</h2>
-      <input type="text" id="taskTitle" placeholder="Task Title" required />
-      <textarea id="taskDetail" placeholder="Task Detail" required></textarea>
-      <input type="date" id="taskDate" required />
-      <select id="srtRegime">
-        <option value="Standard">Standard</option>
-        <option value="Aggressive">Aggressive</option>
-        <option value="Relaxed">Relaxed</option>
-      </select>
-      <button id="addTaskBtn">Add Task</button>
+    <div class="container">
+        <h1>Task Management</h1>
+
+        <!-- Task Input Form -->
+        <div id="taskForm" class="task-form">
+            <input type="text" id="taskTitle" placeholder="Enter Task Title" class="input-field">
+            <textarea id="taskDetail" placeholder="Enter Task Detail" class="input-field"></textarea>
+            <input type="datetime-local" id="taskDate" class="input-field">
+            <select id="taskRegime" class="input-field">
+                <option value="Standard">Standard</option>
+                <option value="Aggressive">Aggressive</option>
+                <option value="Relaxed">Relaxed</option>
+            </select>
+            <button id="addTaskBtn" class="btn">Add Task</button>
+        </div>
+
+        <!-- Buttons for Navigation -->
+        <div class="nav-buttons">
+            <button id="viewAllTasksBtn" class="btn">View All Tasks</button>
+        </div>
+
+        <!-- Today's Tasks and Revision Tasks -->
+        <div id="todayTasksContainer">
+            <h2>Today's Tasks</h2>
+            <div id="todayTasks"></div>
+        </div>
+
+        <div id="revisionTasksContainer">
+            <h2>Revision Tasks</h2>
+            <div id="revisionTasks"></div>
+        </div>
     </div>
 
-    <!-- Today's Tasks -->
-    <div class="tasks-section">
-      <h2>Today's Tasks</h2>
-      <div id="todayTasks"></div>
-    </div>
+    <script src="app.js"></script>
+    <script>
+        // Add Task Button Event Listener
+        document.getElementById("addTaskBtn").addEventListener("click", function() {
+            addTask();
+        });
 
-    <!-- Revision Tasks -->
-    <div class="tasks-section">
-      <h2>Revision Tasks</h2>
-      <div id="revisionTasks"></div>
-    </div>
+        // View All Tasks Button Event Listener
+        document.getElementById("viewAllTasksBtn").addEventListener("click", function() {
+            window.location.href = "all-tasks.html"; // Navigate to All Tasks page
+        });
 
-    <button id="allTasksBtn" class="btn">View All Tasks</button>
-  </div>
+        // Function to Add Task
+        function addTask() {
+            const title = document.getElementById("taskTitle").value;
+            const detail = document.getElementById("taskDetail").value;
+            const date = new Date(document.getElementById("taskDate").value).toISOString();
+            const srtRegime = document.getElementById("taskRegime").value;
 
-  <script src="app.js"></script>
+            if (title && detail && date && srtRegime) {
+                const task = {
+                    id: Date.now(),
+                    title: title,
+                    detail: detail,
+                    date: date,
+                    srtRegime: srtRegime
+                };
+
+                let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+                tasks.push(task);
+                localStorage.setItem("tasks", JSON.stringify(tasks));
+
+                alert("Task Added!");
+                resetForm(); // Reset form fields after adding the task
+                renderTodayTasks(); // Re-render today's tasks
+                renderRevisionTasks(); // Re-render revision tasks
+            } else {
+                alert("Please fill all the fields!");
+            }
+        }
+
+        // Function to Reset Form Fields
+        function resetForm() {
+            document.getElementById("taskTitle").value = "";
+            document.getElementById("taskDetail").value = "";
+            document.getElementById("taskDate").value = "";
+            document.getElementById("taskRegime").value = "Standard";
+        }
+
+        // Function to Render Today's Tasks
+        function renderTodayTasks() {
+            const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            const todayTasks = tasks.filter(task => task.date.startsWith(today));
+
+            const container = document.getElementById("todayTasks");
+            container.innerHTML = todayTasks.map(task => `
+                <div class="task-entry">
+                    <h4>${task.title}</h4>
+                    <p>${task.detail}</p>
+                    <p><strong>Regime:</strong> ${task.srtRegime}</p>
+                </div>
+            `).join("");
+        }
+
+        // Function to Render Revision Tasks
+        function renderRevisionTasks() {
+            const today = new Date();
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            const revisionTasks = tasks.filter(task => {
+                const taskDate = new Date(task.date);
+                const diffInDays = Math.floor((today - taskDate) / (1000 * 3600 * 24));
+                return diffInDays === 1 || diffInDays === 3 || diffInDays === 7 || diffInDays === 14 || diffInDays === 21;
+            });
+
+            const container = document.getElementById("revisionTasks");
+            container.innerHTML = revisionTasks.map(task => `
+                <div class="task-entry">
+                    <h4>${task.title}</h4>
+                    <p>${task.detail}</p>
+                    <p><strong>Regime:</strong> ${task.srtRegime}</p>
+                </div>
+            `).join("");
+        }
+
+        // Render tasks on page load
+        document.addEventListener("DOMContentLoaded", function() {
+            renderTodayTasks();
+            renderRevisionTasks();
+        });
+    </script>
 </body>
 </html>
