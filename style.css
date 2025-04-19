@@ -1,130 +1,59 @@
 /* General Styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f7f6;
+  background-color: #f4f4f4;
   color: #333;
   margin: 0;
   padding: 0;
 }
 
-/* Container for Content */
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 800px;
+  margin: 30px auto;
   padding: 20px;
-}
-
-/* Header */
-header {
-  background-color: #22F5B1;
-  padding: 15px;
-  color: #fff;
-  text-align: center;
-  font-size: 24px;
-}
-
-header h1 {
-  margin: 0;
-}
-
-/* Task Form */
-.form-group {
-  margin-bottom: 15px;
-}
-
-input[type="text"], input[type="date"], select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 button {
   background-color: #22F5B1;
-  color: white;
-  padding: 10px 15px;
   border: none;
-  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  margin: 5px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 button:hover {
-  background-color: #19c191;
-}
-
-button:disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
+  background-color: #1eb8a0;
 }
 
 input[type="file"] {
   padding: 10px;
-}
-
-/* Task and Revision Sections */
-.task-item {
-  background-color: #fff;
-  padding: 15px;
-  margin: 10px 0;
+  font-size: 14px;
+  margin: 5px;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.task-item:hover {
-  background-color: #f1f1f1;
+/* All Tasks Page */
+#backToHome {
+  margin-bottom: 20px;
 }
 
-.task-red {
-  border-left: 5px solid #ff6b6b;
+.task-management-buttons {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.task-green {
-  border-left: 5px solid #4caf50;
+.task-management-buttons button,
+input[type="file"] {
+  flex: 1;
 }
 
-.task-item h4 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.task-item p {
-  margin: 5px 0;
-}
-
-/* Today's Tasks Section */
-#todayTasks {
-  margin-top: 30px;
-}
-
-#todayTasks h3 {
-  font-size: 20px;
-  color: #333;
-}
-
-#todayTasks p {
-  font-size: 16px;
-  color: #555;
-}
-
-/* Revision Tasks Section */
-#revisionTasks {
-  margin-top: 30px;
-}
-
-#revisionTasks h3 {
-  font-size: 20px;
-  color: #333;
-}
-
-#revisionTasks p {
-  font-size: 16px;
-  color: #555;
-}
-
-/* All Tasks Page Styles */
 #allTasksContainer {
   margin-top: 30px;
 }
@@ -134,111 +63,140 @@ input[type="file"] {
 }
 
 .task-group h3 {
-  font-size: 24px;
+  font-size: 20px;
   color: #333;
-  margin-bottom: 10px;
+  text-decoration: underline;
 }
 
 .task-entry {
-  background-color: #fff;
-  padding: 10px;
-  margin: 10px 0;
+  background-color: #f9f9f9;
+  padding: 15px;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .task-entry h4 {
   margin: 0;
   font-size: 18px;
+  color: #22F5B1;
 }
 
 .task-entry p {
-  margin: 5px 0;
+  font-size: 14px;
+  margin: 10px 0;
+  color: #666;
 }
 
-.task-entry .srt-regime {
-  font-size: 14px;
-  color: #888;
+.srt-regime,
+.revision-dates {
+  font-size: 12px;
+  color: #666;
 }
 
 .delete-btn {
-  background-color: #ff6b6b;
+  background-color: #f44336;
+  border: none;
   color: white;
   padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
+  font-size: 12px;
   cursor: pointer;
+  border-radius: 3px;
+  margin-top: 10px;
 }
 
 .delete-btn:hover {
-  background-color: #e05050;
+  background-color: #e53935;
 }
 
-/* Buttons for Task Management */
-button.download, button.upload, button.reset {
-  margin: 10px;
-  background-color: #007bff;
+.task-entry .srt-regime {
+  font-weight: bold;
 }
 
-button.download:hover, button.upload:hover, button.reset:hover {
-  background-color: #0056b3;
+.task-entry .revision-dates {
+  font-weight: bold;
 }
 
-button.download, button.upload, button.reset {
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
+button {
+  transition: background-color 0.3s;
 }
 
-/* Customization Form */
-input[type="number"].aggressive-input, input[type="number"].relaxed-input {
-  width: 60px;
-  padding: 5px;
-  margin: 5px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+input[type="file"] {
+  margin-top: 10px;
 }
 
-#updateSRTButton {
-  margin-top: 15px;
-  background-color: #22F5B1;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+h1, h2, h3 {
+  font-family: 'Arial', sans-serif;
+  color: #333;
 }
 
-#updateSRTButton:hover {
-  background-color: #19c191;
+h4 {
+  color: #333;
 }
 
-/* Mobile Responsiveness */
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+/* Specific Button Styles */
+button#downloadTasks {
+  background-color: #4CAF50;
+}
+
+button#downloadTasks:hover {
+  background-color: #45a049;
+}
+
+button#resetTasks {
+  background-color: #f44336;
+}
+
+button#resetTasks:hover {
+  background-color: #e53935;
+}
+
+button#uploadTasks {
+  background-color: #2196F3;
+}
+
+button#uploadTasks:hover {
+  background-color: #1976d2;
+}
+
+button#backToHome {
+  background-color: #009688;
+}
+
+button#backToHome:hover {
+  background-color: #00796b;
+}
+
+/* Responsive Design for Mobile Devices */
 @media (max-width: 768px) {
-  .container {
-    padding: 10px;
+  .task-management-buttons {
+    flex-direction: column;
   }
 
-  input[type="text"], input[type="date"], select {
-    width: 100%;
-    padding: 8px;
-  }
-
-  button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
+  .task-management-buttons button,
+  input[type="file"] {
+    margin-bottom: 10px;
   }
 }
 
-/* Popups */
-.popup {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #22F5B1;
-  color: #000;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.
+/* Helper Classes */
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}
