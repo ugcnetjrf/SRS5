@@ -183,7 +183,7 @@ function renderAllTasksGroupedByDate() {
       grouped[date].forEach((task) => {
         const taskDiv = document.createElement("div");
         taskDiv.className = "task-entry";
-        taskDiv.innerHTML = `  
+        taskDiv.innerHTML = `
           <h4>📌 ${task.title}</h4>
           <p>📝 ${task.detail}</p>
           <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
@@ -209,14 +209,10 @@ function deleteTask(id) {
 function resetAllTasks() {
   if (confirm("Delete all tasks?")) {
     tasks = [];
-    localStorage.removeItem("tasks"); // Immediately clear tasks from localStorage
-
-    // Immediately clear the task sections on the page without needing a refresh
-    document.getElementById("todayTasks").innerHTML = "<p>No tasks added today.</p>";
-    document.getElementById("revisionTasks").innerHTML = "<p>No revisions due today.</p>";
-    document.getElementById("allTasksContainer").innerHTML = "";
-
-    showPopup("All tasks have been deleted successfully!");
+    saveTasks();
+    renderTodayTasks();
+    renderRevisionTasks();
+    renderAllTasksGroupedByDate();
   }
 }
 
@@ -260,6 +256,34 @@ function uploadTasks(event) {
   reader.readAsText(file);
 }
 
+// Update SRT Intervals
+function saveCustomIntervals() {
+  // Get the interval values from the inputs
+  customRegimes.Aggressive = [
+    parseInt(document.getElementById("aggressive1").value),
+    parseInt(document.getElementById("aggressive2").value),
+    parseInt(document.getElementById("aggressive4").value),
+    parseInt(document.getElementById("aggressive7").value),
+    parseInt(document.getElementById("aggressive10").value),
+  ];
+
+  customRegimes.Relaxed = [
+    parseInt(document.getElementById("relaxed2").value),
+    parseInt(document.getElementById("relaxed5").value),
+    parseInt(document.getElementById("relaxed10").value),
+    parseInt(document.getElementById("relaxed20").value),
+    parseInt(document.getElementById("relaxed30").value),
+  ];
+
+  // Store the updated values in localStorage
+  localStorage.setItem("customRegimes", JSON.stringify(customRegimes));
+
+  alert("SRT intervals have been saved!");
+
+  // Optionally navigate back to the add-tasks page or do any additional tasks
+  window.location.href = "add-tasks.html"; // Navigate back after saving
+}
+
 // Initial Setup
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("taskDate")) {
@@ -270,4 +294,20 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("todayTasks")) renderTodayTasks();
   if (document.getElementById("revisionTasks")) renderRevisionTasks();
   if (document.getElementById("allTasksContainer")) renderAllTasksGroupedByDate();
+
+  // Add event listener for "Settings" button in add-tasks.html
+  const settingsBtn = document.getElementById("settingsBtn");
+  if (settingsBtn) {
+    settingsBtn.addEventListener("click", () => {
+      window.location.href = "settings.html"; // Navigate to settings page
+    });
+  }
+
+  // Handle Back button on settings page
+  const backBtn = document.getElementById("backBtn");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      window.location.href = "add-tasks.html"; // Navigate back to add tasks
+    });
+  }
 });
