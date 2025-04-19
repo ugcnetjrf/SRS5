@@ -1,94 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Tasks</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Task</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header>
+    <h1>Add Task</h1>
+    <button id="settingsBtn">Settings</button>
+  </header>
+  
+  <form id="taskForm">
+    <input type="text" id="taskTitle" placeholder="Task Title" required>
+    <textarea id="taskDetail" placeholder="Task Details" required></textarea>
+    <input type="date" id="taskDate" required>
+    <select id="srtRegime">
+      <option value="Standard">Standard</option>
+      <option value="Aggressive">Aggressive</option>
+      <option value="Relaxed">Relaxed</option>
+    </select>
+    <button type="button" onclick="addTask()">Add Task</button>
+  </form>
 
-    <div class="container">
-        <!-- Navigation Buttons -->
-        <div class="nav-buttons">
-            <button id="backToHomeBtn" class="btn">Back to Home</button>
-            <button id="downloadTasksBtn" class="btn">Download All Tasks</button>
-            <input type="file" id="uploadTasksBtn" class="file-input" accept=".txt">
-            <button id="resetTasksBtn" class="btn">Reset All</button>
-        </div>
-
-        <!-- All Tasks Section -->
-        <div id="allTasksContainer">
-            <h2>All Tasks</h2>
-            <p>Here are all the tasks created so far, grouped by creation date:</p>
-            <!-- Task Groups will be rendered here -->
-        </div>
-
-    </div>
-
-    <script src="app.js"></script>
-    <script>
-        // Back to Home Button
-        document.getElementById("backToHomeBtn").addEventListener("click", function() {
-            window.location.href = "index.html";
-        });
-
-        // Download All Tasks
-        document.getElementById("downloadTasksBtn").addEventListener("click", function() {
-            downloadTasks();
-        });
-
-        // Upload Tasks
-        document.getElementById("uploadTasksBtn").addEventListener("change", function(event) {
-            uploadTasks(event);
-        });
-
-        // Reset All Tasks
-        document.getElementById("resetTasksBtn").addEventListener("click", function() {
-            resetAllTasks();
-        });
-        
-        // Function to render all tasks grouped by date
-        function renderAllTasksGroupedByDate() {
-            const container = document.getElementById("allTasksContainer");
-            container.innerHTML = "";
-
-            const grouped = {};
-            tasks.forEach((task) => {
-                if (!grouped[task.date]) grouped[task.date] = [];
-                grouped[task.date].push(task);
-            });
-
-            Object.keys(grouped)
-                .sort()
-                .forEach((date) => {
-                    const section = document.createElement("div");
-                    section.className = "task-group";
-
-                    const header = document.createElement("h3");
-                    header.textContent = date;
-                    section.appendChild(header);
-
-                    grouped[date].forEach((task) => {
-                        const taskDiv = document.createElement("div");
-                        taskDiv.className = "task-entry";
-                        taskDiv.innerHTML = `
-                            <h4>📌 ${task.title}</h4>
-                            <p>📝 ${task.detail}</p>
-                            <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
-                            <button onclick="deleteTask(${task.id})" class="delete-btn">Delete</button>
-                        `;
-                        section.appendChild(taskDiv);
-                    });
-
-                    container.appendChild(section);
-                });
-        }
-
-        // Initial setup
-        document.addEventListener("DOMContentLoaded", () => {
-            renderAllTasksGroupedByDate();
-        });
-    </script>
+  <script src="app.js"></script>
 </body>
 </html>
