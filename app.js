@@ -205,14 +205,18 @@ function deleteTask(id) {
   }
 }
 
-// Reset All Tasks
+// ✅ Reset All Tasks - Now also clears the visible UI
 function resetAllTasks() {
   if (confirm("Delete all tasks?")) {
     tasks = [];
     saveTasks();
     renderTodayTasks();
     renderRevisionTasks();
-    renderAllTasksGroupedByDate();
+
+    const container = document.getElementById("allTasksContainer");
+    if (container) {
+      container.innerHTML = "";
+    }
   }
 }
 
@@ -256,7 +260,7 @@ function uploadTasks(event) {
   reader.readAsText(file);
 }
 
-// Update SRT Intervals
+// Save Custom SRT Intervals
 function saveCustomIntervals() {
   const aggressiveInputs = document.querySelectorAll(".aggressive-input");
   const relaxedInputs = document.querySelectorAll(".relaxed-input");
