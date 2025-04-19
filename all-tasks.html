@@ -4,21 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>All Tasks</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="all-tasks-container">
-    <header>
-      <button onclick="window.location.href='index.html'">Back to Home</button>
-      <button id="downloadTasksBtn">Download All Tasks</button>
-      <input type="file" id="uploadTasksBtn" accept=".txt" />
-      <button onclick="resetAllTasks()">Reset All</button>
-    </header>
-
+  <div class="container">
     <h1>All Tasks</h1>
-    <div id="allTasksContainer">
-      <!-- Tasks will be grouped and displayed here -->
+
+    <button id="backToHomeBtn" class="btn">Back to Home</button>
+
+    <!-- Download, Upload, Reset Buttons -->
+    <div class="task-buttons">
+      <button id="downloadTasksBtn" class="btn">Download All Tasks</button>
+      <input type="file" id="uploadTasksBtn" accept=".txt" class="file-input" />
+      <button id="resetTasksBtn" class="btn">Reset All</button>
     </div>
+
+    <div id="allTasksContainer" class="task-list"></div>
   </div>
 
   <script src="app.js"></script>
