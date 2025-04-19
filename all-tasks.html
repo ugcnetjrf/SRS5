@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Task</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tasks</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Add Task</h1>
-    <button id="settingsBtn">Settings</button>
-  </header>
-  
-  <form id="taskForm">
-    <input type="text" id="taskTitle" placeholder="Task Title" required>
-    <textarea id="taskDetail" placeholder="Task Details" required></textarea>
-    <input type="date" id="taskDate" required>
-    <select id="srtRegime">
-      <option value="Standard">Standard</option>
-      <option value="Aggressive">Aggressive</option>
-      <option value="Relaxed">Relaxed</option>
-    </select>
-    <button type="button" onclick="addTask()">Add Task</button>
-  </form>
+    <div class="container">
+        <h1>All Tasks</h1>
 
-  <script src="app.js"></script>
+        <!-- Display the task groups (grouped by dates) -->
+        <div id="allTasksContainer"></div>
+
+        <!-- Buttons Container -->
+        <div style="text-align: center; margin-top: 20px;">
+            <!-- "Settings" Button -->
+            <div id="settingsButtonContainer" style="margin-bottom: 10px;">
+                <!-- The "Settings" button will be dynamically inserted here by app.js -->
+            </div>
+
+            <!-- "Download All Tasks" Button -->
+            <button id="downloadTasksBtn" onclick="downloadTasks()" style="padding: 10px 20px; background-color: #22F5B1; border: none; color: white; border-radius: 5px; cursor: pointer;">
+                Download All Tasks
+            </button>
+        </div>
+
+        <!-- Reset All Tasks Button -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="resetAllTasks()" style="padding: 10px 20px; background-color: #FF6347; border: none; color: white; border-radius: 5px; cursor: pointer;">
+                Reset All
+            </button>
+        </div>
+    </div>
 </body>
 </html>
