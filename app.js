@@ -96,7 +96,7 @@ function renderTodayTasks() {
 
   todayTasks.forEach((task) => {
     const div = document.createElement("div");
-    div.className = "task-item";
+    div.className = "task-item task-red";
     div.textContent = task.title;
 
     div.addEventListener("click", () => {
@@ -126,15 +126,37 @@ function renderRevisionTasks() {
 
   dueTasks.forEach((task) => {
     const div = document.createElement("div");
-    div.className = "task-item";
+    div.className = "task-item task-red";
     div.textContent = task.title;
 
     div.addEventListener("click", () => {
       alert(task.detail);
     });
 
+    div.addEventListener("swipeleft", () => markRevisionDone(task, div, today));
+    div.addEventListener("swiperight", () =>
+      undoRevisionDone(task, div, today)
+    );
+
     container.appendChild(div);
   });
+}
+
+// Mark and Undo Revision
+function markRevisionDone(task, div, date) {
+  if (!task.completedRevisions.includes(date)) {
+    task.completedRevisions.push(date);
+    div.classList.remove("task-red");
+    div.classList.add("task-green");
+    saveTasks();
+  }
+}
+
+function undoRevisionDone(task, div, date) {
+  task.completedRevisions = task.completedRevisions.filter((d) => d !== date);
+  div.classList.remove("task-green");
+  div.classList.add("task-red");
+  saveTasks();
 }
 
 // Render All Tasks Grouped by Date
@@ -142,140 +164,122 @@ function renderAllTasksGroupedByDate() {
   const container = document.getElementById("allTasksContainer");
   container.innerHTML = "";
 
-  const groupedTasks = tasks.reduce((groups, task) => {
-    task.revisionDates.forEach((date) => {
-      if (!groups[date]) {
-        groups[date] = [];
-      }
-      groups[date].push(task);
+  const grouped = {};
+  tasks.forEach((task) => {
+    if (!grouped[task.date]) grouped[task.date] = [];
+    grouped[task.date].push(task);
+  });
+
+  Object.keys(grouped)
+    .sort()
+    .forEach((date) => {
+      const section = document.createElement("div");
+      section.className = "task-group";
+
+      const header = document.createElement("h3");
+      header.textContent = date;
+      section.appendChild(header);
+
+      grouped[date].forEach((task) => {
+        const taskDiv = document.createElement("div");
+        taskDiv.className = "task-entry";
+        taskDiv.innerHTML = `
+          <h4>📌 ${task.title}</h4>
+          <p>📝 ${task.detail}</p>
+          <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
+          <button onclick="deleteTask(${task.id})" class="delete-btn">Delete</button>
+        `;
+        section.appendChild(taskDiv);
+      });
+
+      container.appendChild(section);
     });
-    return groups;
-  }, {});
+}
 
-  for (const [date, tasks] of Object.entries(groupedTasks)) {
-    const groupDiv = document.createElement("div");
-    groupDiv.className = "task-group";
-
-    const dateHeader = document.createElement("h3");
-    dateHeader.textContent = `Revision Date: ${date}`;
-    groupDiv.appendChild(dateHeader);
-
-    tasks.forEach((task) => {
-      const taskDiv = document.createElement("div");
-      taskDiv.className = "task-item";
-      taskDiv.textContent = task.title;
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "delete-btn";
-      deleteBtn.textContent = "Delete";
-      deleteBtn.addEventListener("click", () => deleteTask(task.id));
-
-      taskDiv.appendChild(deleteBtn);
-      groupDiv.appendChild(taskDiv);
-    });
-
-    container.appendChild(groupDiv);
+// Delete Individual Task
+function deleteTask(id) {
+  if (confirm("Delete this task permanently?")) {
+    tasks = tasks.filter((t) => t.id !== id);
+    saveTasks();
+    renderAllTasksGroupedByDate();
   }
 }
 
-// Delete Task
-function deleteTask(taskId) {
-  tasks = tasks.filter((task) => task.id !== taskId);
-  saveTasks();
-  renderAllTasksGroupedByDate();
-  showPopup("Task deleted.");
+// Reset All Tasks
+function resetAllTasks() {
+  if (confirm("Delete all tasks?")) {
+    tasks = [];
+    saveTasks();
+    renderTodayTasks();
+    renderRevisionTasks();
+    renderAllTasksGroupedByDate();
+  }
 }
 
-// Download Tasks as Text File
+// Download Backup
 function downloadTasks() {
-  const tasksText = tasks
-    .map((task) => {
-      return `Title: ${task.title}\nDetail: ${task.detail}\nDate: ${task.date}\nSRT Regime: ${task.srtRegime}\nRevision Dates: ${task.revisionDates.join(
-        ", "
-      )}\n\n`;
-    })
-    .join("");
-
-  const blob = new Blob([tasksText], { type: "text/plain" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "tasks.txt";
-  link.click();
+  const blob = new Blob([JSON.stringify(tasks, null, 2)], {
+    type: "text/plain"
+  });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "tasks_backup.txt";
+  a.click();
 }
 
-// Upload Tasks from Text File
-function uploadTasks() {
-  const fileInput = document.getElementById("uploadTasksBtn");
-  const file = fileInput.files[0];
-
-  if (!file) {
-    showPopup("No file selected.");
+// Upload Backup
+function uploadTasks(event) {
+  const file = event.target.files[0];
+  if (!file || !file.name.endsWith(".txt")) {
+    alert("Please upload a valid .txt file");
     return;
   }
 
   const reader = new FileReader();
   reader.onload = function (e) {
-    const content = e.target.result;
-    const taskEntries = content.split("\n\n");
-
-    taskEntries.forEach((entry) => {
-      const lines = entry.split("\n");
-      if (lines.length < 4) return;
-
-      const title = lines[0].replace("Title: ", "").trim();
-      const detail = lines[1].replace("Detail: ", "").trim();
-      const date = lines[2].replace("Date: ", "").trim();
-      const srtRegime = lines[3].replace("SRT Regime: ", "").trim();
-      const revisionDates = lines[4]
-        ? lines[4].replace("Revision Dates: ", "").split(", ").map((d) => d.trim())
-        : [];
-
-      const task = {
-        id: Date.now(),
-        title,
-        detail,
-        date,
-        srtRegime,
-        revisionDates,
-        completedRevisions: []
-      };
-
-      tasks.push(task);
-    });
-
-    saveTasks();
-    renderAllTasksGroupedByDate();
-    showPopup("Tasks uploaded successfully!");
+    try {
+      const data = JSON.parse(e.target.result);
+      if (Array.isArray(data)) {
+        tasks = data;
+        saveTasks();
+        renderTodayTasks();
+        renderRevisionTasks();
+        renderAllTasksGroupedByDate();
+        alert("Tasks uploaded successfully!");
+      } else {
+        alert("Invalid file structure.");
+      }
+    } catch {
+      alert("Failed to parse file.");
+    }
   };
-
   reader.readAsText(file);
 }
 
-// Reset All Tasks
-function resetTasks() {
-  if (confirm("Are you sure you want to reset all tasks?")) {
-    tasks = [];
-    saveTasks();
-    renderAllTasksGroupedByDate();
-    showPopup("All tasks have been reset.");
-  }
+// Update SRT Intervals
+function saveCustomIntervals() {
+  const aggressiveInputs = document.querySelectorAll(".aggressive-input");
+  const relaxedInputs = document.querySelectorAll(".relaxed-input");
+
+  customRegimes.Aggressive = Array.from(aggressiveInputs)
+    .map((el) => parseInt(el.value))
+    .filter((n) => !isNaN(n));
+  customRegimes.Relaxed = Array.from(relaxedInputs)
+    .map((el) => parseInt(el.value))
+    .filter((n) => !isNaN(n));
+
+  localStorage.setItem("customRegimes", JSON.stringify(customRegimes));
+  alert("SRT intervals updated!");
 }
 
-// Event Listeners
-document.getElementById("addTaskBtn").addEventListener("click", addTask);
-document.getElementById("allTasksBtn").addEventListener("click", () => {
-  window.location.href = "all-tasks.html";
+// Initial Setup
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("taskDate")) {
+    document.getElementById("taskDate").value =
+      new Date().toISOString().split("T")[0];
+  }
+
+  if (document.getElementById("todayTasks")) renderTodayTasks();
+  if (document.getElementById("revisionTasks")) renderRevisionTasks();
+  if (document.getElementById("allTasksContainer")) renderAllTasksGroupedByDate();
 });
-
-document.getElementById("backToHomeBtn").addEventListener("click", () => {
-  window.location.href = "index.html";
-});
-
-document.getElementById("downloadTasksBtn").addEventListener("click", downloadTasks);
-document.getElementById("uploadTasksBtn").addEventListener("change", uploadTasks);
-document.getElementById("resetTasksBtn").addEventListener("click", resetTasks);
-
-// Initialize Views
-renderTodayTasks();
-renderRevisionTasks();
-renderAllTasksGroupedByDate();
