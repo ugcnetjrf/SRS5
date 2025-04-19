@@ -29,12 +29,12 @@ function showPopup(message) {
   }, 2000);
 }
 
-// Add Task
+// Add Task Functionality
 function addTask() {
   const titleInput = document.getElementById("taskTitle");
   const detailInput = document.getElementById("taskDetail");
   const dateInput = document.getElementById("taskDate");
-  const srtSelect = document.getElementById("srtRegime");
+  const srtSelect = document.getElementById("taskRegime");
 
   const title = titleInput.value.trim();
   const detail = detailInput.value.trim();
@@ -81,7 +81,7 @@ function addTask() {
   showPopup("Task added successfully!");
 }
 
-// Render Daily Tasks
+// Render Today's Tasks
 function renderTodayTasks() {
   const today = new Date().toISOString().split("T")[0];
   const container = document.getElementById("todayTasks");
@@ -107,7 +107,7 @@ function renderTodayTasks() {
   });
 }
 
-// Render Revision Tasks Due Today
+// Render Revision Tasks
 function renderRevisionTasks() {
   const today = new Date().toISOString().split("T")[0];
   const container = document.getElementById("revisionTasks");
@@ -133,155 +133,56 @@ function renderRevisionTasks() {
       alert(task.detail);
     });
 
-    div.addEventListener("swipeleft", () => markRevisionDone(task, div, today));
-    div.addEventListener("swiperight", () =>
-      undoRevisionDone(task, div, today)
-    );
-
     container.appendChild(div);
   });
 }
 
-// Mark and Undo Revision
-function markRevisionDone(task, div, date) {
-  if (!task.completedRevisions.includes(date)) {
-    task.completedRevisions.push(date);
-    div.classList.remove("task-red");
-    div.classList.add("task-green");
-    saveTasks();
-  }
-}
-
-function undoRevisionDone(task, div, date) {
-  task.completedRevisions = task.completedRevisions.filter((d) => d !== date);
-  div.classList.remove("task-green");
-  div.classList.add("task-red");
-  saveTasks();
-}
-
-// Render All Tasks Grouped by Date
-function renderAllTasksGroupedByDate() {
-  const container = document.getElementById("allTasksContainer");
-  container.innerHTML = "";
-
-  const grouped = {};
-  tasks.forEach((task) => {
-    if (!grouped[task.date]) grouped[task.date] = [];
-    grouped[task.date].push(task);
-  });
-
-  Object.keys(grouped)
-    .sort()
-    .forEach((date) => {
-      const section = document.createElement("div");
-      section.className = "task-group";
-
-      const header = document.createElement("h3");
-      header.textContent = date;
-      section.appendChild(header);
-
-      grouped[date].forEach((task) => {
-        const taskDiv = document.createElement("div");
-        taskDiv.className = "task-entry";
-        taskDiv.innerHTML = ` 
-          <h4>📌 ${task.title}</h4>
-          <p>📝 ${task.detail}</p>
-          <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
-          <button onclick="deleteTask(${task.id})" class="delete-btn">Delete</button>
-        `;
-        section.appendChild(taskDiv);
-      });
-
-      container.appendChild(section);
-    });
-}
-
-// Delete Individual Task
-function deleteTask(id) {
-  if (confirm("Delete this task permanently?")) {
-    tasks = tasks.filter((t) => t.id !== id);
-    saveTasks();
-    renderAllTasksGroupedByDate();
-  }
-}
-
-// Reset All Tasks
-function resetAllTasks() {
-  if (confirm("Delete all tasks?")) {
-    tasks = [];
-    saveTasks();
-    renderTodayTasks();
-    renderRevisionTasks();
-    renderAllTasksGroupedByDate();
-  }
-}
-
-// Download Tasks
-function downloadTasks() {
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-  if (tasks.length === 0) {
-    alert("No tasks to download!");
-    return;
-  }
-
-  let tasksString = "Task Title | Task Detail | Date | SRT Regime\n";
-  tasks.forEach(task => {
-    tasksString += `${task.title} | ${task.detail} | ${task.date} | ${task.srtRegime}\n`;
-  });
-
-  const blob = new Blob([tasksString], { type: 'text/plain' });
-
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'tasks_backup.txt';
-
+// Download All Tasks Functionality
+function downloadAllTasks() {
+  const tasksJson = JSON.stringify(tasks, null, 2);
+  const blob = new Blob([tasksJson], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "tasks.json";
   link.click();
+  URL.revokeObjectURL(url);
 }
 
-// Upload Tasks
+// Upload Tasks Functionality
 function uploadTasks(event) {
   const file = event.target.files[0];
-  if (!file || !file.name.endsWith(".txt")) {
-    alert("Please upload a valid .txt file");
-    return;
-  }
+  if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = function (e) {
+  reader.onload = () => {
     try {
-      const data = JSON.parse(e.target.result);
-      if (Array.isArray(data)) {
-        tasks = data;
+      const uploadedTasks = JSON.parse(reader.result);
+      if (Array.isArray(uploadedTasks)) {
+        tasks = uploadedTasks;
         saveTasks();
         renderTodayTasks();
         renderRevisionTasks();
-        renderAllTasksGroupedByDate();
-        alert("Tasks uploaded successfully!");
+        showPopup("Tasks uploaded successfully!");
       } else {
-        alert("Invalid file structure.");
+        showPopup("Invalid task format.");
       }
-    } catch {
-      alert("Failed to parse file.");
+    } catch (error) {
+      showPopup("Error reading file.");
     }
   };
   reader.readAsText(file);
 }
 
-// Update SRT Intervals
-function saveCustomIntervals() {
-  const aggressiveInputs = document.querySelectorAll(".aggressive-input");
-  const relaxedInputs = document.querySelectorAll(".relaxed-input");
-
-  customRegimes.Aggressive = Array.from(aggressiveInputs)
-    .map((el) => parseInt(el.value))
-    .filter((n) => !isNaN(n));
-  customRegimes.Relaxed = Array.from(relaxedInputs)
-    .map((el) => parseInt(el.value))
-    .filter((n) => !isNaN(n));
-
-  localStorage.setItem("customRegimes", JSON.stringify(customRegimes));
-  alert("SRT intervals updated!");
+// Reset All Tasks Functionality
+function resetAllTasks() {
+  if (confirm("Are you sure you want to reset all tasks? This action is irreversible.")) {
+    tasks = [];
+    saveTasks();
+    renderTodayTasks();
+    renderRevisionTasks();
+    showPopup("All tasks have been reset.");
+  }
 }
 
 // Initial Setup
@@ -291,7 +192,23 @@ document.addEventListener("DOMContentLoaded", () => {
       new Date().toISOString().split("T")[0];
   }
 
+  // Render Today's Tasks and Revision Tasks on page load
   if (document.getElementById("todayTasks")) renderTodayTasks();
   if (document.getElementById("revisionTasks")) renderRevisionTasks();
-  if (document.getElementById("allTasksContainer")) renderAllTasksGroupedByDate();
+
+  // Add Task Button Event
+  const addTaskButton = document.getElementById("addTaskButton");
+  addTaskButton.addEventListener("click", addTask);
+
+  // Download Tasks Button Event
+  const downloadTasksButton = document.getElementById("downloadTasksButton");
+  downloadTasksButton.addEventListener("click", downloadAllTasks);
+
+  // Upload Tasks Button Event
+  const uploadTasksButton = document.getElementById("uploadTasksButton");
+  uploadTasksButton.addEventListener("change", uploadTasks);
+
+  // Reset All Tasks Button Event
+  const resetAllButton = document.getElementById("resetAllButton");
+  resetAllButton.addEventListener("click", resetAllTasks);
 });
