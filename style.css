@@ -1,208 +1,135 @@
 /* General Styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
+  background-color: #fff2f7;
+  color: #333;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  box-sizing: border-box;
 }
 
-/* Header Styles */
+/* Header */
 header {
+  background-color: #ff4f81;  /* Vibrant pink */
+  color: #fff;
   text-align: center;
-  padding: 20px;
-  background-color: #22F5B1;
-  width: 100%;
-  color: white;
-  font-size: 24px;
-  border-bottom: 3px solid #1ED193;
-  margin-bottom: 20px;
+  padding: 30px 20px;
 }
 
-/* Button Container */
-.button-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 20px;
+header h1 {
+  font-size: 36px;
+  margin: 0;
 }
 
-.button-container button {
-  background-color: #22F5B1;
-  color: white;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+header p {
   font-size: 18px;
 }
 
-.button-container button:hover {
-  background-color: #1ED193;
-}
-
-/* Main Container for Form and Tasks */
-#taskContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80%;
-  max-width: 800px;
-}
-
-/* Form Styling */
-form {
-  background-color: white;
+/* Main Section */
+main {
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  width: 100%;
 }
 
-form input, form select {
+/* Task Controls Section */
+#taskControls {
+  background-color: #fdf0c2;  /* Soft yellow */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+#taskControls h2 {
+  font-size: 24px;
+  color: #ff4f81;  /* Vibrant pink */
+}
+
+#taskControls div {
+  margin-bottom: 15px;
+}
+
+#taskControls label {
+  font-size: 16px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+#taskControls input, #taskControls textarea, #taskControls select {
   width: 100%;
   padding: 10px;
-  margin: 10px 0;
+  border: 2px solid #ff4f81;  /* Pink border */
   border-radius: 5px;
-  border: 1px solid #ddd;
+  box-sizing: border-box;
 }
 
-form button {
-  background-color: #22F5B1;
-  color: white;
+#taskControls button {
+  background-color: #ff4f81;  /* Vibrant pink */
+  color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
+  font-size: 18px;
   cursor: pointer;
-  font-size: 16px;
 }
 
-form button:hover {
-  background-color: #1ED193;
+#taskControls button:hover {
+  background-color: #ff1e4c;  /* Darker pink on hover */
 }
 
-/* Task List Styles */
+/* Tasks Overview Section */
+#tasksOverview {
+  margin-top: 20px;
+}
+
+#tasksOverview h2 {
+  font-size: 24px;
+  color: #ff4f81;  /* Vibrant pink */
+  margin-bottom: 10px;
+}
+
+#todayTasks, #revisionTasks {
+  margin-top: 20px;
+}
+
 .task-item {
-  background-color: #ffffff;
+  background-color: #fdf0c2;  /* Soft yellow */
   padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   margin: 10px 0;
-  width: 100%;
-  max-width: 500px;
-  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .task-item:hover {
-  background-color: #f1f1f1;
+  background-color: #ffb6c1;  /* Light pink */
 }
 
-.task-item p {
-  margin: 0;
-  font-size: 16px;
-  color: #555;
+/* Footer */
+footer {
+  background-color: #ff4f81;  /* Vibrant pink */
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
 }
 
-/* Popup Styles */
-div.popup {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #22F5B1;
-  color: #000;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-}
-
-div.popup p {
-  margin: 0;
-  font-size: 16px;
-}
-
-/* Task Group Container */
-.task-group {
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 800px;
-}
-
-.task-group h3 {
-  background-color: #22F5B1;
-  color: white;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 0;
-}
-
-.task-entry {
-  background-color: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+footer p {
+  font-size: 14px;
   margin: 10px 0;
 }
 
-.task-entry h4 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: bold;
+#settingsButtonContainer {
+  margin: 10px 0;
 }
 
-.task-entry p {
-  margin: 5px 0;
-  font-size: 16px;
-}
-
-.task-entry .srt-regime {
-  font-size: 14px;
-  color: #888;
-}
-
-.task-entry .delete-btn {
-  background-color: #f44336;
-  color: white;
-  padding: 5px 10px;
+#settingsButtonContainer button {
+  background-color: #fdf0c2;  /* Soft yellow */
+  color: #ff4f81;  /* Pink text */
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 14px;
-  margin-top: 10px;
 }
 
-.task-entry .delete-btn:hover {
-  background-color: #d32f2f;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  #taskContainer {
-    width: 90%;
-  }
-
-  .task-item, form, .task-entry {
-    width: 100%;
-  }
-
-  .task-group h3 {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  header {
-    font-size: 20px;
-    padding: 15px;
-  }
-
-  #settingsButton, #downloadButton {
-    font-size: 16px;
-    padding: 10px 20px;
-  }
+#settingsButtonContainer button:hover {
+  background-color: #ffb6c1;  /* Light pink on hover */
 }
