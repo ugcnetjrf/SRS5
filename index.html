@@ -3,149 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Task Manager</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f4f4f9;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #22F5B1;
-      padding: 10px 20px;
-      text-align: center;
-      color: #333;
-      font-size: 24px;
-      font-weight: 500;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .card {
-      background-color: #fff;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-    }
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    input, select, textarea {
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      width: 100%;
-    }
-    .btn {
-      background-color: #22F5B1;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .btn:hover {
-      background-color: #1cd99d;
-    }
-    .task-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    .task-item {
-      background-color: #e6f9f2;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-    .task-item:hover {
-      transform: scale(1.05);
-    }
-    .task-item p {
-      margin: 10px 0;
-      font-size: 14px;
-      color: #555;
-    }
-    .task-item h4 {
-      font-size: 18px;
-      color: #333;
-    }
-    .task-item .delete-btn {
-      background-color: #ff6f61;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-    }
-    .task-item .delete-btn:hover {
-      background-color: #e7554f;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+  <!-- Header Section -->
   <header>
     <h1>Task Manager</h1>
   </header>
 
+  <!-- Main Container -->
   <div class="container">
-
-    <!-- Task Form -->
-    <div class="card">
+    <!-- Task Input Form -->
+    <div id="taskInputForm">
       <h2>Add New Task</h2>
-      <form id="taskForm">
-        <input type="text" id="taskTitle" placeholder="Task Title" required>
-        <textarea id="taskDetail" placeholder="Task Details" required></textarea>
+      <div class="form-group">
+        <label for="taskTitle">Task Title:</label>
+        <input type="text" id="taskTitle" placeholder="Enter task title" required>
+      </div>
+
+      <div class="form-group">
+        <label for="taskDetail">Task Detail:</label>
+        <input type="text" id="taskDetail" placeholder="Enter task details" required>
+      </div>
+
+      <div class="form-group">
+        <label for="taskDate">Task Date (Indian Time):</label>
         <input type="date" id="taskDate" required>
-        <select id="srtRegime" required>
-          <option value="Standard">Standard SRT</option>
-          <option value="Aggressive">Aggressive SRT</option>
-          <option value="Relaxed">Relaxed SRT</option>
+      </div>
+
+      <div class="form-group">
+        <label for="taskRegime">Select Regime:</label>
+        <select id="taskRegime" required>
+          <option value="Standard">Standard</option>
+          <option value="Aggressive">Aggressive</option>
+          <option value="Relaxed">Relaxed</option>
         </select>
-        <button type="submit" class="btn">Add Task</button>
-      </form>
-    </div>
-
-    <!-- All Tasks Button -->
-    <div class="card">
-      <button class="btn" onclick="window.location.href = 'all-tasks.html'">All Tasks</button>
-    </div>
-
-    <!-- Today's Tasks -->
-    <div class="card">
-      <h2>Today's Tasks</h2>
-      <div id="todayTasks" class="task-list">
-        <!-- Tasks will be dynamically rendered here -->
       </div>
+
+      <button id="addTaskButton">Add Task</button>
     </div>
 
-    <!-- Revision Tasks -->
-    <div class="card">
-      <h2>Revision Tasks</h2>
-      <div id="revisionTasks" class="task-list">
-        <!-- Revision tasks will be dynamically rendered here -->
-      </div>
+    <!-- Today's Tasks Section -->
+    <div id="todayTasks">
+      <h3>Today's Tasks</h3>
+      <p id="todayTasksMessage">No tasks for today. Please add a task.</p>
     </div>
 
+    <!-- Revision Tasks Section -->
+    <div id="revisionTasks">
+      <h3>Revision Tasks</h3>
+      <p id="revisionTasksMessage">No revision tasks due today. Please add a task.</p>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div id="navigationButtons">
+      <button id="allTasksButton">All Tasks</button>
+    </div>
   </div>
 
+  <!-- JavaScript File -->
   <script src="app.js"></script>
 </body>
 </html>
