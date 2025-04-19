@@ -46,17 +46,13 @@ function addTask() {
     return;
   }
 
-  // Indian Time Zone
-  const indianDate = new Date(date + ' UTC+05:30'); // Convert to Indian Time Zone
-  const formattedDate = indianDate.toISOString().split('T')[0];
-
   const intervals =
     srtRegime === "Standard"
       ? [1, 3, 7, 14, 21]
       : customRegimes[srtRegime] || [];
 
   const revisionDates = intervals.map((i) => {
-    const d = new Date(formattedDate);
+    const d = new Date(date);
     d.setDate(d.getDate() + i);
     return d.toISOString().split("T")[0];
   });
@@ -65,7 +61,7 @@ function addTask() {
     id: Date.now(),
     title,
     detail,
-    date: formattedDate,
+    date,
     srtRegime,
     revisionDates,
     completedRevisions: []
@@ -85,7 +81,7 @@ function addTask() {
   showPopup("Task added successfully!");
 }
 
-// Render Today's Tasks
+// Render Daily Tasks
 function renderTodayTasks() {
   const today = new Date().toISOString().split("T")[0];
   const container = document.getElementById("todayTasks");
@@ -187,7 +183,7 @@ function renderAllTasksGroupedByDate() {
       grouped[date].forEach((task) => {
         const taskDiv = document.createElement("div");
         taskDiv.className = "task-entry";
-        taskDiv.innerHTML = `
+        taskDiv.innerHTML = ` 
           <h4>📌 ${task.title}</h4>
           <p>📝 ${task.detail}</p>
           <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
@@ -220,18 +216,30 @@ function resetAllTasks() {
   }
 }
 
-// Download Backup
+// Download Tasks
 function downloadTasks() {
-  const blob = new Blob([JSON.stringify(tasks, null, 2)], {
-    type: "text/plain"
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  if (tasks.length === 0) {
+    alert("No tasks to download!");
+    return;
+  }
+
+  let tasksString = "Task Title | Task Detail | Date | SRT Regime\n";
+  tasks.forEach(task => {
+    tasksString += `${task.title} | ${task.detail} | ${task.date} | ${task.srtRegime}\n`;
   });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "tasks_backup.txt";
-  a.click();
+
+  const blob = new Blob([tasksString], { type: 'text/plain' });
+
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'tasks_backup.txt';
+
+  link.click();
 }
 
-// Upload Backup
+// Upload Tasks
 function uploadTasks(event) {
   const file = event.target.files[0];
   if (!file || !file.name.endsWith(".txt")) {
@@ -260,8 +268,29 @@ function uploadTasks(event) {
   reader.readAsText(file);
 }
 
+// Update SRT Intervals
+function saveCustomIntervals() {
+  const aggressiveInputs = document.querySelectorAll(".aggressive-input");
+  const relaxedInputs = document.querySelectorAll(".relaxed-input");
+
+  customRegimes.Aggressive = Array.from(aggressiveInputs)
+    .map((el) => parseInt(el.value))
+    .filter((n) => !isNaN(n));
+  customRegimes.Relaxed = Array.from(relaxedInputs)
+    .map((el) => parseInt(el.value))
+    .filter((n) => !isNaN(n));
+
+  localStorage.setItem("customRegimes", JSON.stringify(customRegimes));
+  alert("SRT intervals updated!");
+}
+
 // Initial Setup
 document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("taskDate")) {
+    document.getElementById("taskDate").value =
+      new Date().toISOString().split("T")[0];
+  }
+
   if (document.getElementById("todayTasks")) renderTodayTasks();
   if (document.getElementById("revisionTasks")) renderRevisionTasks();
   if (document.getElementById("allTasksContainer")) renderAllTasksGroupedByDate();
