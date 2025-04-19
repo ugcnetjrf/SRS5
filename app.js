@@ -183,7 +183,7 @@ function renderAllTasksGroupedByDate() {
       grouped[date].forEach((task) => {
         const taskDiv = document.createElement("div");
         taskDiv.className = "task-entry";
-        taskDiv.innerHTML = `
+        taskDiv.innerHTML = `  
           <h4>📌 ${task.title}</h4>
           <p>📝 ${task.detail}</p>
           <div class="srt-regime">🕒 SRT Regime: ${task.srtRegime}</div>
@@ -205,18 +205,18 @@ function deleteTask(id) {
   }
 }
 
-// ✅ Reset All Tasks - Now also clears the visible UI
+// Reset All Tasks
 function resetAllTasks() {
   if (confirm("Delete all tasks?")) {
     tasks = [];
-    saveTasks();
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    
+    // Clear the task sections immediately
     renderTodayTasks();
     renderRevisionTasks();
+    renderAllTasksGroupedByDate();
 
-    const container = document.getElementById("allTasksContainer");
-    if (container) {
-      container.innerHTML = "";
-    }
+    showPopup("All tasks have been deleted successfully!");
   }
 }
 
@@ -258,22 +258,6 @@ function uploadTasks(event) {
     }
   };
   reader.readAsText(file);
-}
-
-// Save Custom SRT Intervals
-function saveCustomIntervals() {
-  const aggressiveInputs = document.querySelectorAll(".aggressive-input");
-  const relaxedInputs = document.querySelectorAll(".relaxed-input");
-
-  customRegimes.Aggressive = Array.from(aggressiveInputs)
-    .map((el) => parseInt(el.value))
-    .filter((n) => !isNaN(n));
-  customRegimes.Relaxed = Array.from(relaxedInputs)
-    .map((el) => parseInt(el.value))
-    .filter((n) => !isNaN(n));
-
-  localStorage.setItem("customRegimes", JSON.stringify(customRegimes));
-  alert("SRT intervals updated!");
 }
 
 // Initial Setup
