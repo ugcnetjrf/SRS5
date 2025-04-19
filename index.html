@@ -3,67 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Task Manager</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Header Section -->
-  <header>
-    <h1>Task Manager</h1>
-  </header>
-
-  <!-- Main Container -->
   <div class="container">
+    <h1>Task Manager</h1>
+
     <!-- Task Input Form -->
-    <div id="taskInputForm">
-      <h2>Add New Task</h2>
-      <div class="form-group">
-        <label for="taskTitle">Task Title:</label>
-        <input type="text" id="taskTitle" placeholder="Enter task title" required>
-      </div>
-
-      <div class="form-group">
-        <label for="taskDetail">Task Detail:</label>
-        <input type="text" id="taskDetail" placeholder="Enter task details" required>
-      </div>
-
-      <div class="form-group">
-        <label for="taskDate">Task Date (Indian Time):</label>
-        <input type="date" id="taskDate" required>
-      </div>
-
-      <div class="form-group">
-        <label for="taskRegime">Select Regime:</label>
-        <select id="taskRegime" required>
-          <option value="Standard">Standard</option>
-          <option value="Aggressive">Aggressive</option>
-          <option value="Relaxed">Relaxed</option>
-        </select>
-      </div>
-
-      <button id="addTaskButton">Add Task</button>
+    <div class="task-input">
+      <h2>Add a New Task</h2>
+      <input type="text" id="taskTitle" placeholder="Task Title" required />
+      <textarea id="taskDetail" placeholder="Task Detail" required></textarea>
+      <input type="date" id="taskDate" required />
+      <select id="srtRegime">
+        <option value="Standard">Standard</option>
+        <option value="Aggressive">Aggressive</option>
+        <option value="Relaxed">Relaxed</option>
+      </select>
+      <button id="addTaskBtn">Add Task</button>
     </div>
 
-    <!-- Today's Tasks Section -->
-    <div id="todayTasks">
-      <h3>Today's Tasks</h3>
-      <p id="todayTasksMessage">No tasks for today. Please add a task.</p>
+    <!-- Today's Tasks -->
+    <div class="tasks-section">
+      <h2>Today's Tasks</h2>
+      <div id="todayTasks"></div>
     </div>
 
-    <!-- Revision Tasks Section -->
-    <div id="revisionTasks">
-      <h3>Revision Tasks</h3>
-      <p id="revisionTasksMessage">No revision tasks due today. Please add a task.</p>
+    <!-- Revision Tasks -->
+    <div class="tasks-section">
+      <h2>Revision Tasks</h2>
+      <div id="revisionTasks"></div>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div id="navigationButtons">
-      <a href="all-tasks.html"><button id="allTasksButton">All Tasks</button></a>
-    </div>
+    <button id="allTasksBtn" class="btn">View All Tasks</button>
   </div>
 
-  <!-- JavaScript File -->
   <script src="app.js"></script>
 </body>
 </html>
