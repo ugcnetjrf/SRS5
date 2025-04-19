@@ -46,13 +46,17 @@ function addTask() {
     return;
   }
 
+  // Indian Time Zone
+  const indianDate = new Date(date + ' UTC+05:30'); // Convert to Indian Time Zone
+  const formattedDate = indianDate.toISOString().split('T')[0];
+
   const intervals =
     srtRegime === "Standard"
       ? [1, 3, 7, 14, 21]
       : customRegimes[srtRegime] || [];
 
   const revisionDates = intervals.map((i) => {
-    const d = new Date(date);
+    const d = new Date(formattedDate);
     d.setDate(d.getDate() + i);
     return d.toISOString().split("T")[0];
   });
@@ -61,7 +65,7 @@ function addTask() {
     id: Date.now(),
     title,
     detail,
-    date,
+    date: formattedDate,
     srtRegime,
     revisionDates,
     completedRevisions: []
@@ -81,7 +85,7 @@ function addTask() {
   showPopup("Task added successfully!");
 }
 
-// Render Daily Tasks
+// Render Today's Tasks
 function renderTodayTasks() {
   const today = new Date().toISOString().split("T")[0];
   const container = document.getElementById("todayTasks");
