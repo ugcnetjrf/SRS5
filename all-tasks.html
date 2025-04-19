@@ -48,20 +48,12 @@
             background-color: #FFD700; /* Golden color for Settings */
         }
 
-        #resetAllButton {
-            background-color: #22F5B1; /* Green color for Reset */
-        }
-
         #downloadTaskButton {
             background-color: #FF6347; /* Red for Download */
         }
 
         #settingsButton:hover {
             background-color: #FFB800;
-        }
-
-        #resetAllButton:hover {
-            background-color: #1C9D8C;
         }
 
         #downloadTaskButton:hover {
@@ -133,11 +125,6 @@
                 Settings
             </button>
 
-            <!-- Reset All Button -->
-            <button id="resetAllButton">
-                Reset All
-            </button>
-
             <!-- Download Task Button -->
             <button id="downloadTaskButton">
                 Download Task
@@ -153,14 +140,6 @@
         // Event Listeners for the Buttons
         document.getElementById("settingsButton").addEventListener("click", function () {
             window.location.href = "settings.html";  // Link to settings page
-        });
-
-        document.getElementById("resetAllButton").addEventListener("click", function () {
-            if (confirm("Are you sure you want to delete all tasks?")) {
-                localStorage.removeItem("tasks");  // Remove all tasks from localStorage
-                alert("All tasks have been deleted.");
-                renderAllTasksGroupedByDate();  // Re-render tasks (which will be none)
-            }
         });
 
         document.getElementById("downloadTaskButton").addEventListener("click", function () {
